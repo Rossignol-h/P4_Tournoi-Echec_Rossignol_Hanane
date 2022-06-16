@@ -12,3 +12,31 @@ class RapportModel:
     @classmethod
     def liste_complete(cls, table):
         return table.all()
+
+    @classmethod
+    def total_db(cls, table):
+        return len(table.all())
+
+    @classmethod
+    def tri_par_nom(cls, table):
+        resultat = sorted(
+            table, key=lambda k: k['nom'])
+        return resultat
+
+    @classmethod
+    def tri_par_rang(cls, table):
+        resultat = sorted(
+            table, key=lambda k: k['rang'], reverse=False)
+        return resultat
+
+    @classmethod
+    def tri_par_score(cls, table):
+        resultat = sorted(
+            table, key=lambda k: k['score'], reverse=True)
+        return resultat
+
+    @classmethod
+    def tri_par_id(cls, table):
+        resultat = sorted(
+            table, key=lambda k: k['id'], reverse=False)
+        return resultat

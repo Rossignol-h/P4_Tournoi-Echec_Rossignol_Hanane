@@ -40,3 +40,10 @@ class RapportModel:
         resultat = sorted(
             table, key=lambda k: k['id'], reverse=False)
         return resultat
+
+    @classmethod
+    def import_tournoi(cls, id):
+        query = Query()
+        resultat = table_tournois.search(query.id == id)
+        tournoi = resultat[0]
+        return tournoi

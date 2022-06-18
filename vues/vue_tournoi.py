@@ -32,7 +32,7 @@ class VueTournoi:
         console.print('')
         lieu = str(console.input
                    ("[cyan2]Veuillez entrer le lieu du tournoi[/] : ")).capitalize()
-        while filtre.search(lieu) is None or len(lieu) <= 0:
+        while filtre.search(lieu) is None:
             lieu = str(console.input
                        ("[cyan2]Veuillez entrer le lieu du tournoi[/] : ")).capitalize()
         return lieu
@@ -63,8 +63,7 @@ class VueTournoi:
                 raise ValueError
             return nb_tour
         except ValueError:
-            print(
-                f"Le chiffre n'est pas dans l'intervalle 1 à {NOMBRE_TOUR} !")
+            print(f"Le chiffre n'est pas dans l'intervalle 1 à {NOMBRE_TOUR} !")
             return VueTournoi.nb_tour()
 
     @staticmethod
@@ -99,3 +98,50 @@ class VueTournoi:
         except ValueError:
             print("Desolé vous avez dépassé la limite autorisée !")
             return VueTournoi.remarques()
+
+    @staticmethod
+    def choix_id_tournoi(intervalle):
+        console.rule(style="rule.line, red")
+
+        try:
+            choix = int(input(
+                """
+                Veuillez entrer l'ID du tournoi de votre choix : """))
+            if choix < 0 or choix > intervalle:
+                raise ValueError
+            print("Merci le tournoi va commencer ...")
+            return choix
+        except ValueError:
+            print("Desolé votre saisie n'est pas valide !")
+            return VueTournoi.choix_id_tournoi(intervalle)
+
+# ================================================================ TITRES
+
+    @staticmethod
+    def titre_tournoi():
+        Menu.ecran_a_zero()
+        console.rule("[bold cyan]  CREATION DU TOURNOI  ")
+        print("""
+
+        """)
+
+    @staticmethod
+    def intro_ajout_joueurs():
+        console.print(
+            Panel(
+                """Veuillez ajouter 8 joueurs
+                ( dans ce format: 1 2 3 4 5 6 7 8 ) """,
+                style='light_goldenrod2', expand=False
+            )
+        )
+
+    @staticmethod
+    def intro_joueurs_valide():
+        sleep(1)
+        console.print('''
+                ''')
+        console.print(
+            Panel(
+                """Parfait! les 8 joueurs sont enregistrés :heavy_check_mark:""",
+                style='light_goldenrod2', expand=False
+            ))

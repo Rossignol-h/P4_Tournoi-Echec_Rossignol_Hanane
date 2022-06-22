@@ -1,10 +1,14 @@
-from .rapport import table_joueurs
-from .rapport import table_tournois
-
-# ajout automatique de 10 joueurs par défaut pour peupler la base de données:
+from tinydb import TinyDB, Query
+db = TinyDB('db.json', sort_keys=True, indent=4, separators=(',', ': '))
+table_joueurs = db.table('joueurs')
+table_tournois = db.table('tournois')
 
 
 def peupler_db():
+    
+    """ajout automatique de 10 joueurs et 1 tournoi
+     pour peupler la base de données """
+
     if len(table_joueurs) > 0:
         return
     else:
@@ -48,572 +52,572 @@ def peupler_db():
         table_tournois.insert_multiple([
 
             {
-            "control_temps": "bullet",
-            "date": "18/06/2022",
-            "id": 1,
-            "lieu": "Paris",
-            "nb_tours": 4,
-            "nom": "Coupe de feu",
-            "participants": [
-                {
-                    "date_naissance": "30/11/1990",
-                    "genre": "M",
-                    "id": 1,
-                    "nom": "Carlson",
-                    "prenom": "Magnus",
-                    "rang": 1,
-                    "score": 3.5
-                },
-                {
-                    "date_naissance": "07/11/1979",
-                    "genre": "F",
-                    "id": 2,
-                    "nom": "Harmon",
-                    "prenom": "Elisabeth",
-                    "rang": 2,
-                    "score": 2.0
-                },
-                {
-                    "date_naissance": "22/08/1981",
-                    "genre": "M",
-                    "id": 3,
-                    "nom": "Dubois",
-                    "prenom": "Paul",
-                    "rang": 3,
-                    "score": 2.0
-                },
-                {
-                    "date_naissance": "09/04/1989",
-                    "genre": "F",
-                    "id": 4,
-                    "nom": "Mercier",
-                    "prenom": "Sandra",
-                    "rang": 4,
-                    "score": 3.0
-                },
-                {
-                    "date_naissance": "25/02/2002",
-                    "genre": "M",
-                    "id": 5,
-                    "nom": "Smith",
-                    "prenom": "Will",
-                    "rang": 5,
-                    "score": 0
-                },
-                {
-                    "date_naissance": "19/09/2000",
-                    "genre": "M",
-                    "id": 6,
-                    "nom": "Sparrow",
-                    "prenom": "Jack",
-                    "rang": 6,
-                    "score": 1.5
-                },
-                {
-                    "date_naissance": "18/03/1984",
-                    "genre": "F",
-                    "id": 7,
-                    "nom": "Curie",
-                    "prenom": "Marie",
-                    "rang": 7,
-                    "score": 1.5
-                },
-                {
-                    "date_naissance": "05/02/1978",
-                    "genre": "M",
-                    "id": 8,
-                    "nom": "Darmon",
-                    "prenom": "Gerard",
-                    "rang": 8,
-                    "score": 2.5
-                }
-            ],
-            "remarques": "",
-            "tours": [
-                {
-                    "debut_tour": "18/06/2022 03:17:05",
-                    "fin_tour": "18/06/2022 03:17:25",
-                    "liste_matchs": [
-                        {
-                            "gagnant": {
-                                "date_naissance": "30/11/1990",
-                                "genre": "M",
-                                "id": 1,
-                                "nom": "Carlson",
-                                "prenom": "Magnus",
-                                "rang": 1,
-                                "score": 3.5
+                "control_temps": "bullet",
+                "date": "18/06/2022",
+                "id": 1,
+                "lieu": "Paris",
+                "nb_tours": 4,
+                "nom": "Coupe de feu",
+                "participants": [
+                    {
+                        "date_naissance": "30/11/1990",
+                        "genre": "M",
+                        "id": 1,
+                        "nom": "Carlson",
+                        "prenom": "Magnus",
+                        "rang": 1,
+                        "score": 3.5
+                    },
+                    {
+                        "date_naissance": "07/11/1979",
+                        "genre": "F",
+                        "id": 2,
+                        "nom": "Harmon",
+                        "prenom": "Elisabeth",
+                        "rang": 2,
+                        "score": 2.0
+                    },
+                    {
+                        "date_naissance": "22/08/1981",
+                        "genre": "M",
+                        "id": 3,
+                        "nom": "Dubois",
+                        "prenom": "Paul",
+                        "rang": 3,
+                        "score": 2.0
+                    },
+                    {
+                        "date_naissance": "09/04/1989",
+                        "genre": "F",
+                        "id": 4,
+                        "nom": "Mercier",
+                        "prenom": "Sandra",
+                        "rang": 4,
+                        "score": 3.0
+                    },
+                    {
+                        "date_naissance": "25/02/2002",
+                        "genre": "M",
+                        "id": 5,
+                        "nom": "Smith",
+                        "prenom": "Will",
+                        "rang": 5,
+                        "score": 0
+                    },
+                    {
+                        "date_naissance": "19/09/2000",
+                        "genre": "M",
+                        "id": 6,
+                        "nom": "Sparrow",
+                        "prenom": "Jack",
+                        "rang": 6,
+                        "score": 1.5
+                    },
+                    {
+                        "date_naissance": "18/03/1984",
+                        "genre": "F",
+                        "id": 7,
+                        "nom": "Curie",
+                        "prenom": "Marie",
+                        "rang": 7,
+                        "score": 1.5
+                    },
+                    {
+                        "date_naissance": "05/02/1978",
+                        "genre": "M",
+                        "id": 8,
+                        "nom": "Darmon",
+                        "prenom": "Gerard",
+                        "rang": 8,
+                        "score": 2.5
+                    }
+                ],
+                "remarques": "",
+                "tours": [
+                    {
+                        "debut_tour": "18/06/2022 03:17:05",
+                        "fin_tour": "18/06/2022 03:17:25",
+                        "liste_matchs": [
+                            {
+                                "gagnant": {
+                                    "date_naissance": "30/11/1990",
+                                    "genre": "M",
+                                    "id": 1,
+                                    "nom": "Carlson",
+                                    "prenom": "Magnus",
+                                    "rang": 1,
+                                    "score": 3.5
+                                },
+                                "joueur_A": {
+                                    "date_naissance": "30/11/1990",
+                                    "genre": "M",
+                                    "id": 1,
+                                    "nom": "Carlson",
+                                    "prenom": "Magnus",
+                                    "rang": 1,
+                                    "score": 3.5
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "25/02/2002",
+                                    "genre": "M",
+                                    "id": 5,
+                                    "nom": "Smith",
+                                    "prenom": "Will",
+                                    "rang": 5,
+                                    "score": 0
+                                },
+                                "nom": "Match 1"
                             },
-                            "joueur_A": {
-                                "date_naissance": "30/11/1990",
-                                "genre": "M",
-                                "id": 1,
-                                "nom": "Carlson",
-                                "prenom": "Magnus",
-                                "rang": 1,
-                                "score": 3.5
+                            {
+                                "gagnant": {
+                                    "date_naissance": "19/09/2000",
+                                    "genre": "M",
+                                    "id": 6,
+                                    "nom": "Sparrow",
+                                    "prenom": "Jack",
+                                    "rang": 6,
+                                    "score": 1.5
+                                },
+                                "joueur_A": {
+                                    "date_naissance": "07/11/1979",
+                                    "genre": "F",
+                                    "id": 2,
+                                    "nom": "Harmon",
+                                    "prenom": "Elisabeth",
+                                    "rang": 2,
+                                    "score": 2.0
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "19/09/2000",
+                                    "genre": "M",
+                                    "id": 6,
+                                    "nom": "Sparrow",
+                                    "prenom": "Jack",
+                                    "rang": 6,
+                                    "score": 1.5
+                                },
+                                "nom": "Match 2"
                             },
-                            "joueur_B": {
-                                "date_naissance": "25/02/2002",
-                                "genre": "M",
-                                "id": 5,
-                                "nom": "Smith",
-                                "prenom": "Will",
-                                "rang": 5,
-                                "score": 0
+                            {
+                                "gagnant": {
+                                    "date_naissance": "22/08/1981",
+                                    "genre": "M",
+                                    "id": 3,
+                                    "nom": "Dubois",
+                                    "prenom": "Paul",
+                                    "rang": 3,
+                                    "score": 2.0
+                                },
+                                "joueur_A": {
+                                    "date_naissance": "22/08/1981",
+                                    "genre": "M",
+                                    "id": 3,
+                                    "nom": "Dubois",
+                                    "prenom": "Paul",
+                                    "rang": 3,
+                                    "score": 2.0
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "18/03/1984",
+                                    "genre": "F",
+                                    "id": 7,
+                                    "nom": "Curie",
+                                    "prenom": "Marie",
+                                    "rang": 7,
+                                    "score": 1.5
+                                },
+                                "nom": "Match 3"
                             },
-                            "nom": "Match 1"
-                        },
-                        {
-                            "gagnant": {
-                                "date_naissance": "19/09/2000",
-                                "genre": "M",
-                                "id": 6,
-                                "nom": "Sparrow",
-                                "prenom": "Jack",
-                                "rang": 6,
-                                "score": 1.5
+                            {
+                                "gagnant": None,
+                                "joueur_A": {
+                                    "date_naissance": "09/04/1989",
+                                    "genre": "F",
+                                    "id": 4,
+                                    "nom": "Mercier",
+                                    "prenom": "Sandra",
+                                    "rang": 4,
+                                    "score": 3.0
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "05/02/1978",
+                                    "genre": "M",
+                                    "id": 8,
+                                    "nom": "Darmon",
+                                    "prenom": "Gerard",
+                                    "rang": 8,
+                                    "score": 2.5
+                                },
+                                "nom": "Match 4"
+                            }
+                        ],
+                        "nom": "Round 1"
+                    },
+                    {
+                        "debut_tour": "18/06/2022 03:17:25",
+                        "fin_tour": "18/06/2022 03:18:02",
+                        "liste_matchs": [
+                            {
+                                "gagnant": {
+                                    "date_naissance": "30/11/1990",
+                                    "genre": "M",
+                                    "id": 1,
+                                    "nom": "Carlson",
+                                    "prenom": "Magnus",
+                                    "rang": 1,
+                                    "score": 3.5
+                                },
+                                "joueur_A": {
+                                    "date_naissance": "30/11/1990",
+                                    "genre": "M",
+                                    "id": 1,
+                                    "nom": "Carlson",
+                                    "prenom": "Magnus",
+                                    "rang": 1,
+                                    "score": 3.5
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "22/08/1981",
+                                    "genre": "M",
+                                    "id": 3,
+                                    "nom": "Dubois",
+                                    "prenom": "Paul",
+                                    "rang": 3,
+                                    "score": 2.0
+                                },
+                                "nom": "Match 1"
                             },
-                            "joueur_A": {
-                                "date_naissance": "07/11/1979",
-                                "genre": "F",
-                                "id": 2,
-                                "nom": "Harmon",
-                                "prenom": "Elisabeth",
-                                "rang": 2,
-                                "score": 2.0
+                            {
+                                "gagnant": {
+                                    "date_naissance": "09/04/1989",
+                                    "genre": "F",
+                                    "id": 4,
+                                    "nom": "Mercier",
+                                    "prenom": "Sandra",
+                                    "rang": 4,
+                                    "score": 3.0
+                                },
+                                "joueur_A": {
+                                    "date_naissance": "19/09/2000",
+                                    "genre": "M",
+                                    "id": 6,
+                                    "nom": "Sparrow",
+                                    "prenom": "Jack",
+                                    "rang": 6,
+                                    "score": 1.5
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "09/04/1989",
+                                    "genre": "F",
+                                    "id": 4,
+                                    "nom": "Mercier",
+                                    "prenom": "Sandra",
+                                    "rang": 4,
+                                    "score": 3.0
+                                },
+                                "nom": "Match 2"
                             },
-                            "joueur_B": {
-                                "date_naissance": "19/09/2000",
-                                "genre": "M",
-                                "id": 6,
-                                "nom": "Sparrow",
-                                "prenom": "Jack",
-                                "rang": 6,
-                                "score": 1.5
+                            {
+                                "gagnant": {
+                                    "date_naissance": "05/02/1978",
+                                    "genre": "M",
+                                    "id": 8,
+                                    "nom": "Darmon",
+                                    "prenom": "Gerard",
+                                    "rang": 8,
+                                    "score": 2.5
+                                },
+                                "joueur_A": {
+                                    "date_naissance": "05/02/1978",
+                                    "genre": "M",
+                                    "id": 8,
+                                    "nom": "Darmon",
+                                    "prenom": "Gerard",
+                                    "rang": 8,
+                                    "score": 2.5
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "07/11/1979",
+                                    "genre": "F",
+                                    "id": 2,
+                                    "nom": "Harmon",
+                                    "prenom": "Elisabeth",
+                                    "rang": 2,
+                                    "score": 2.0
+                                },
+                                "nom": "Match 3"
                             },
-                            "nom": "Match 2"
-                        },
-                        {
-                            "gagnant": {
-                                "date_naissance": "22/08/1981",
-                                "genre": "M",
-                                "id": 3,
-                                "nom": "Dubois",
-                                "prenom": "Paul",
-                                "rang": 3,
-                                "score": 2.0
+                            {
+                                "gagnant": {
+                                    "date_naissance": "18/03/1984",
+                                    "genre": "F",
+                                    "id": 7,
+                                    "nom": "Curie",
+                                    "prenom": "Marie",
+                                    "rang": 7,
+                                    "score": 1.5
+                                },
+                                "joueur_A": {
+                                    "date_naissance": "25/02/2002",
+                                    "genre": "M",
+                                    "id": 5,
+                                    "nom": "Smith",
+                                    "prenom": "Will",
+                                    "rang": 5,
+                                    "score": 0
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "18/03/1984",
+                                    "genre": "F",
+                                    "id": 7,
+                                    "nom": "Curie",
+                                    "prenom": "Marie",
+                                    "rang": 7,
+                                    "score": 1.5
+                                },
+                                "nom": "Match 4"
+                            }
+                        ],
+                        "nom": "Round 2"
+                    },
+                    {
+                        "debut_tour": "18/06/2022 03:18:02",
+                        "fin_tour": "18/06/2022 03:18:24",
+                        "liste_matchs": [
+                            {
+                                "gagnant": None,
+                                "joueur_A": {
+                                    "date_naissance": "30/11/1990",
+                                    "genre": "M",
+                                    "id": 1,
+                                    "nom": "Carlson",
+                                    "prenom": "Magnus",
+                                    "rang": 1,
+                                    "score": 3.5
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "09/04/1989",
+                                    "genre": "F",
+                                    "id": 4,
+                                    "nom": "Mercier",
+                                    "prenom": "Sandra",
+                                    "rang": 4,
+                                    "score": 3.0
+                                },
+                                "nom": "Match 1"
                             },
-                            "joueur_A": {
-                                "date_naissance": "22/08/1981",
-                                "genre": "M",
-                                "id": 3,
-                                "nom": "Dubois",
-                                "prenom": "Paul",
-                                "rang": 3,
-                                "score": 2.0
+                            {
+                                "gagnant": {
+                                    "date_naissance": "05/02/1978",
+                                    "genre": "M",
+                                    "id": 8,
+                                    "nom": "Darmon",
+                                    "prenom": "Gerard",
+                                    "rang": 8,
+                                    "score": 2.5
+                                },
+                                "joueur_A": {
+                                    "date_naissance": "05/02/1978",
+                                    "genre": "M",
+                                    "id": 8,
+                                    "nom": "Darmon",
+                                    "prenom": "Gerard",
+                                    "rang": 8,
+                                    "score": 2.5
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "22/08/1981",
+                                    "genre": "M",
+                                    "id": 3,
+                                    "nom": "Dubois",
+                                    "prenom": "Paul",
+                                    "rang": 3,
+                                    "score": 2.0
+                                },
+                                "nom": "Match 2"
                             },
-                            "joueur_B": {
-                                "date_naissance": "18/03/1984",
-                                "genre": "F",
-                                "id": 7,
-                                "nom": "Curie",
-                                "prenom": "Marie",
-                                "rang": 7,
-                                "score": 1.5
+                            {
+                                "gagnant": None,
+                                "joueur_A": {
+                                    "date_naissance": "19/09/2000",
+                                    "genre": "M",
+                                    "id": 6,
+                                    "nom": "Sparrow",
+                                    "prenom": "Jack",
+                                    "rang": 6,
+                                    "score": 1.5
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "18/03/1984",
+                                    "genre": "F",
+                                    "id": 7,
+                                    "nom": "Curie",
+                                    "prenom": "Marie",
+                                    "rang": 7,
+                                    "score": 1.5
+                                },
+                                "nom": "Match 3"
                             },
-                            "nom": "Match 3"
-                        },
-                        {
-                            "gagnant": None,
-                            "joueur_A": {
-                                "date_naissance": "09/04/1989",
-                                "genre": "F",
-                                "id": 4,
-                                "nom": "Mercier",
-                                "prenom": "Sandra",
-                                "rang": 4,
-                                "score": 3.0
+                            {
+                                "gagnant": {
+                                    "date_naissance": "07/11/1979",
+                                    "genre": "F",
+                                    "id": 2,
+                                    "nom": "Harmon",
+                                    "prenom": "Elisabeth",
+                                    "rang": 2,
+                                    "score": 2.0
+                                },
+                                "joueur_A": {
+                                    "date_naissance": "07/11/1979",
+                                    "genre": "F",
+                                    "id": 2,
+                                    "nom": "Harmon",
+                                    "prenom": "Elisabeth",
+                                    "rang": 2,
+                                    "score": 2.0
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "25/02/2002",
+                                    "genre": "M",
+                                    "id": 5,
+                                    "nom": "Smith",
+                                    "prenom": "Will",
+                                    "rang": 5,
+                                    "score": 0
+                                },
+                                "nom": "Match 4"
+                            }
+                        ],
+                        "nom": "Round 3"
+                    },
+                    {
+                        "debut_tour": "18/06/2022 03:18:24",
+                        "fin_tour": "18/06/2022 03:18:45",
+                        "liste_matchs": [
+                            {
+                                "gagnant": {
+                                    "date_naissance": "30/11/1990",
+                                    "genre": "M",
+                                    "id": 1,
+                                    "nom": "Carlson",
+                                    "prenom": "Magnus",
+                                    "rang": 1,
+                                    "score": 3.5
+                                },
+                                "joueur_A": {
+                                    "date_naissance": "30/11/1990",
+                                    "genre": "M",
+                                    "id": 1,
+                                    "nom": "Carlson",
+                                    "prenom": "Magnus",
+                                    "rang": 1,
+                                    "score": 3.5
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "05/02/1978",
+                                    "genre": "M",
+                                    "id": 8,
+                                    "nom": "Darmon",
+                                    "prenom": "Gerard",
+                                    "rang": 8,
+                                    "score": 2.5
+                                },
+                                "nom": "Match 1"
                             },
-                            "joueur_B": {
-                                "date_naissance": "05/02/1978",
-                                "genre": "M",
-                                "id": 8,
-                                "nom": "Darmon",
-                                "prenom": "Gerard",
-                                "rang": 8,
-                                "score": 2.5
+                            {
+                                "gagnant": {
+                                    "date_naissance": "09/04/1989",
+                                    "genre": "F",
+                                    "id": 4,
+                                    "nom": "Mercier",
+                                    "prenom": "Sandra",
+                                    "rang": 4,
+                                    "score": 3.0
+                                },
+                                "joueur_A": {
+                                    "date_naissance": "09/04/1989",
+                                    "genre": "F",
+                                    "id": 4,
+                                    "nom": "Mercier",
+                                    "prenom": "Sandra",
+                                    "rang": 4,
+                                    "score": 3.0
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "19/09/2000",
+                                    "genre": "M",
+                                    "id": 6,
+                                    "nom": "Sparrow",
+                                    "prenom": "Jack",
+                                    "rang": 6,
+                                    "score": 1.5
+                                },
+                                "nom": "Match 2"
                             },
-                            "nom": "Match 4"
-                        }
-                    ],
-                    "nom": "Round_1"
-                },
-                {
-                    "debut_tour": "18/06/2022 03:17:25",
-                    "fin_tour": "18/06/2022 03:18:02",
-                    "liste_matchs": [
-                        {
-                            "gagnant": {
-                                "date_naissance": "30/11/1990",
-                                "genre": "M",
-                                "id": 1,
-                                "nom": "Carlson",
-                                "prenom": "Magnus",
-                                "rang": 1,
-                                "score": 3.5
+                            {
+                                "gagnant": {
+                                    "date_naissance": "07/11/1979",
+                                    "genre": "F",
+                                    "id": 2,
+                                    "nom": "Harmon",
+                                    "prenom": "Elisabeth",
+                                    "rang": 2,
+                                    "score": 2.0
+                                },
+                                "joueur_A": {
+                                    "date_naissance": "18/03/1984",
+                                    "genre": "F",
+                                    "id": 7,
+                                    "nom": "Curie",
+                                    "prenom": "Marie",
+                                    "rang": 7,
+                                    "score": 1.5
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "07/11/1979",
+                                    "genre": "F",
+                                    "id": 2,
+                                    "nom": "Harmon",
+                                    "prenom": "Elisabeth",
+                                    "rang": 2,
+                                    "score": 2.0
+                                },
+                                "nom": "Match 3"
                             },
-                            "joueur_A": {
-                                "date_naissance": "30/11/1990",
-                                "genre": "M",
-                                "id": 1,
-                                "nom": "Carlson",
-                                "prenom": "Magnus",
-                                "rang": 1,
-                                "score": 3.5
-                            },
-                            "joueur_B": {
-                                "date_naissance": "22/08/1981",
-                                "genre": "M",
-                                "id": 3,
-                                "nom": "Dubois",
-                                "prenom": "Paul",
-                                "rang": 3,
-                                "score": 2.0
-                            },
-                            "nom": "Match 1"
-                        },
-                        {
-                            "gagnant": {
-                                "date_naissance": "09/04/1989",
-                                "genre": "F",
-                                "id": 4,
-                                "nom": "Mercier",
-                                "prenom": "Sandra",
-                                "rang": 4,
-                                "score": 3.0
-                            },
-                            "joueur_A": {
-                                "date_naissance": "19/09/2000",
-                                "genre": "M",
-                                "id": 6,
-                                "nom": "Sparrow",
-                                "prenom": "Jack",
-                                "rang": 6,
-                                "score": 1.5
-                            },
-                            "joueur_B": {
-                                "date_naissance": "09/04/1989",
-                                "genre": "F",
-                                "id": 4,
-                                "nom": "Mercier",
-                                "prenom": "Sandra",
-                                "rang": 4,
-                                "score": 3.0
-                            },
-                            "nom": "Match 2"
-                        },
-                        {
-                            "gagnant": {
-                                "date_naissance": "05/02/1978",
-                                "genre": "M",
-                                "id": 8,
-                                "nom": "Darmon",
-                                "prenom": "Gerard",
-                                "rang": 8,
-                                "score": 2.5
-                            },
-                            "joueur_A": {
-                                "date_naissance": "05/02/1978",
-                                "genre": "M",
-                                "id": 8,
-                                "nom": "Darmon",
-                                "prenom": "Gerard",
-                                "rang": 8,
-                                "score": 2.5
-                            },
-                            "joueur_B": {
-                                "date_naissance": "07/11/1979",
-                                "genre": "F",
-                                "id": 2,
-                                "nom": "Harmon",
-                                "prenom": "Elisabeth",
-                                "rang": 2,
-                                "score": 2.0
-                            },
-                            "nom": "Match 3"
-                        },
-                        {
-                            "gagnant": {
-                                "date_naissance": "18/03/1984",
-                                "genre": "F",
-                                "id": 7,
-                                "nom": "Curie",
-                                "prenom": "Marie",
-                                "rang": 7,
-                                "score": 1.5
-                            },
-                            "joueur_A": {
-                                "date_naissance": "25/02/2002",
-                                "genre": "M",
-                                "id": 5,
-                                "nom": "Smith",
-                                "prenom": "Will",
-                                "rang": 5,
-                                "score": 0
-                            },
-                            "joueur_B": {
-                                "date_naissance": "18/03/1984",
-                                "genre": "F",
-                                "id": 7,
-                                "nom": "Curie",
-                                "prenom": "Marie",
-                                "rang": 7,
-                                "score": 1.5
-                            },
-                            "nom": "Match 4"
-                        }
-                    ],
-                    "nom": "Round_2"
-                },
-                {
-                    "debut_tour": "18/06/2022 03:18:02",
-                    "fin_tour": "18/06/2022 03:18:24",
-                    "liste_matchs": [
-                        {
-                            "gagnant": None,
-                            "joueur_A": {
-                                "date_naissance": "30/11/1990",
-                                "genre": "M",
-                                "id": 1,
-                                "nom": "Carlson",
-                                "prenom": "Magnus",
-                                "rang": 1,
-                                "score": 3.5
-                            },
-                            "joueur_B": {
-                                "date_naissance": "09/04/1989",
-                                "genre": "F",
-                                "id": 4,
-                                "nom": "Mercier",
-                                "prenom": "Sandra",
-                                "rang": 4,
-                                "score": 3.0
-                            },
-                            "nom": "Match 1"
-                        },
-                        {
-                            "gagnant": {
-                                "date_naissance": "05/02/1978",
-                                "genre": "M",
-                                "id": 8,
-                                "nom": "Darmon",
-                                "prenom": "Gerard",
-                                "rang": 8,
-                                "score": 2.5
-                            },
-                            "joueur_A": {
-                                "date_naissance": "05/02/1978",
-                                "genre": "M",
-                                "id": 8,
-                                "nom": "Darmon",
-                                "prenom": "Gerard",
-                                "rang": 8,
-                                "score": 2.5
-                            },
-                            "joueur_B": {
-                                "date_naissance": "22/08/1981",
-                                "genre": "M",
-                                "id": 3,
-                                "nom": "Dubois",
-                                "prenom": "Paul",
-                                "rang": 3,
-                                "score": 2.0
-                            },
-                            "nom": "Match 2"
-                        },
-                        {
-                            "gagnant": None,
-                            "joueur_A": {
-                                "date_naissance": "19/09/2000",
-                                "genre": "M",
-                                "id": 6,
-                                "nom": "Sparrow",
-                                "prenom": "Jack",
-                                "rang": 6,
-                                "score": 1.5
-                            },
-                            "joueur_B": {
-                                "date_naissance": "18/03/1984",
-                                "genre": "F",
-                                "id": 7,
-                                "nom": "Curie",
-                                "prenom": "Marie",
-                                "rang": 7,
-                                "score": 1.5
-                            },
-                            "nom": "Match 3"
-                        },
-                        {
-                            "gagnant": {
-                                "date_naissance": "07/11/1979",
-                                "genre": "F",
-                                "id": 2,
-                                "nom": "Harmon",
-                                "prenom": "Elisabeth",
-                                "rang": 2,
-                                "score": 2.0
-                            },
-                            "joueur_A": {
-                                "date_naissance": "07/11/1979",
-                                "genre": "F",
-                                "id": 2,
-                                "nom": "Harmon",
-                                "prenom": "Elisabeth",
-                                "rang": 2,
-                                "score": 2.0
-                            },
-                            "joueur_B": {
-                                "date_naissance": "25/02/2002",
-                                "genre": "M",
-                                "id": 5,
-                                "nom": "Smith",
-                                "prenom": "Will",
-                                "rang": 5,
-                                "score": 0
-                            },
-                            "nom": "Match 4"
-                        }
-                    ],
-                    "nom": "Round_3"
-                },
-                {
-                    "debut_tour": "18/06/2022 03:18:24",
-                    "fin_tour": "18/06/2022 03:18:45",
-                    "liste_matchs": [
-                        {
-                            "gagnant": {
-                                "date_naissance": "30/11/1990",
-                                "genre": "M",
-                                "id": 1,
-                                "nom": "Carlson",
-                                "prenom": "Magnus",
-                                "rang": 1,
-                                "score": 3.5
-                            },
-                            "joueur_A": {
-                                "date_naissance": "30/11/1990",
-                                "genre": "M",
-                                "id": 1,
-                                "nom": "Carlson",
-                                "prenom": "Magnus",
-                                "rang": 1,
-                                "score": 3.5
-                            },
-                            "joueur_B": {
-                                "date_naissance": "05/02/1978",
-                                "genre": "M",
-                                "id": 8,
-                                "nom": "Darmon",
-                                "prenom": "Gerard",
-                                "rang": 8,
-                                "score": 2.5
-                            },
-                            "nom": "Match 1"
-                        },
-                        {
-                            "gagnant": {
-                                "date_naissance": "09/04/1989",
-                                "genre": "F",
-                                "id": 4,
-                                "nom": "Mercier",
-                                "prenom": "Sandra",
-                                "rang": 4,
-                                "score": 3.0
-                            },
-                            "joueur_A": {
-                                "date_naissance": "09/04/1989",
-                                "genre": "F",
-                                "id": 4,
-                                "nom": "Mercier",
-                                "prenom": "Sandra",
-                                "rang": 4,
-                                "score": 3.0
-                            },
-                            "joueur_B": {
-                                "date_naissance": "19/09/2000",
-                                "genre": "M",
-                                "id": 6,
-                                "nom": "Sparrow",
-                                "prenom": "Jack",
-                                "rang": 6,
-                                "score": 1.5
-                            },
-                            "nom": "Match 2"
-                        },
-                        {
-                            "gagnant": {
-                                "date_naissance": "07/11/1979",
-                                "genre": "F",
-                                "id": 2,
-                                "nom": "Harmon",
-                                "prenom": "Elisabeth",
-                                "rang": 2,
-                                "score": 2.0
-                            },
-                            "joueur_A": {
-                                "date_naissance": "18/03/1984",
-                                "genre": "F",
-                                "id": 7,
-                                "nom": "Curie",
-                                "prenom": "Marie",
-                                "rang": 7,
-                                "score": 1.5
-                            },
-                            "joueur_B": {
-                                "date_naissance": "07/11/1979",
-                                "genre": "F",
-                                "id": 2,
-                                "nom": "Harmon",
-                                "prenom": "Elisabeth",
-                                "rang": 2,
-                                "score": 2.0
-                            },
-                            "nom": "Match 3"
-                        },
-                        {
-                            "gagnant": {
-                                "date_naissance": "22/08/1981",
-                                "genre": "M",
-                                "id": 3,
-                                "nom": "Dubois",
-                                "prenom": "Paul",
-                                "rang": 3,
-                                "score": 2.0
-                            },
-                            "joueur_A": {
-                                "date_naissance": "22/08/1981",
-                                "genre": "M",
-                                "id": 3,
-                                "nom": "Dubois",
-                                "prenom": "Paul",
-                                "rang": 3,
-                                "score": 2.0
-                            },
-                            "joueur_B": {
-                                "date_naissance": "25/02/2002",
-                                "genre": "M",
-                                "id": 5,
-                                "nom": "Smith",
-                                "prenom": "Will",
-                                "rang": 5,
-                                "score": 0
-                            },
-                            "nom": "Match 4"
-                        }
-                    ],
-                    "nom": "Round_4"
-                }
-            ]
-        }
-    ])
+                            {
+                                "gagnant": {
+                                    "date_naissance": "22/08/1981",
+                                    "genre": "M",
+                                    "id": 3,
+                                    "nom": "Dubois",
+                                    "prenom": "Paul",
+                                    "rang": 3,
+                                    "score": 2.0
+                                },
+                                "joueur_A": {
+                                    "date_naissance": "22/08/1981",
+                                    "genre": "M",
+                                    "id": 3,
+                                    "nom": "Dubois",
+                                    "prenom": "Paul",
+                                    "rang": 3,
+                                    "score": 2.0
+                                },
+                                "joueur_B": {
+                                    "date_naissance": "25/02/2002",
+                                    "genre": "M",
+                                    "id": 5,
+                                    "nom": "Smith",
+                                    "prenom": "Will",
+                                    "rang": 5,
+                                    "score": 0
+                                },
+                                "nom": "Match 4"
+                            }
+                        ],
+                        "nom": "Round 4"
+                    }
+                ]
+            }
+        ])

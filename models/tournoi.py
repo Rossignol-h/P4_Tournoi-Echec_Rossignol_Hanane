@@ -26,9 +26,8 @@ class Tournoi:
     def ajout_tours(self, tour):
         self.tours.append(tour)
 
-# 2-serialize the instanciated players[mail documentation] :
-
     def serialisation(self):
+        """Sérialise le tournoi """
         tournoi_serialisé = {
             "id": self.id,
             "participants": self.participants,
@@ -46,16 +45,16 @@ class Tournoi:
         return tournoi_serialisé
 
     def ajout_tournoi__db(self):
+        """ Ajoute le tournoi à la base de donnée """
         tournoi_serialisé = self.serialisation()
         table_tournois.insert(tournoi_serialisé)
 
     def maj_tournoi__db(self):
+        """ Met à jour le tournoi dans la base de donnée """
         tournoi_db = Query()
-        table_tournois.update(tournoi_db.id == self.id)
+        table_tournois.update(self.serialisation(), tournoi_db.id == self.id)
 
     def recup_id_tournoi(self, nom=str):
+        """ Récupère l'id du tournoi dans la base de donnée """
         doc = table_tournois.search(Tournoi(nom) == self.nom)
         return doc[0].doc_id
-
-    def liste_tours(self):
-        return len(self.liste_tours)

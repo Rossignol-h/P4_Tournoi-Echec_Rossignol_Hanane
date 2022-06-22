@@ -85,14 +85,10 @@ class VueJoueur:
         while True:
             try:
                 print("")
-                ids = list(
-                    map(
-                        int,
-                        console.input(
-                            "[cyan2]Veuillez entrer les ID des joueurs de votre choix[/] : "
-                        ).split(),
-                    )
-                )
+                ids = list(map(int, console.input(
+                      "[cyan2]Veuillez entrer les ID des joueurs de votre choix[/] : "
+                    ).split()))
+
                 if case == 0:
                     if (len(ids) < NB_MAX_JOUEURS) or (len(ids) > NB_MAX_JOUEURS):
                         console.print(
@@ -147,14 +143,9 @@ class VueJoueur:
         doublon = []
         while True:
             print("")
-            rangs = list(
-                map(
-                    int,
-                    console.input(
-                        "[cyan2]Veuillez entrer votre saisie[/] [yellow](1 à 100)[/] : "
-                    ).split(),
-                )
-            )
+            rangs = list(map(int, console.input(
+                     "[cyan2]Veuillez entrer votre saisie[/] [yellow](1 à 100)[/] : "
+                    ).split()))
 
             for rang in rangs:
                 if rang in liste_rangs_db:

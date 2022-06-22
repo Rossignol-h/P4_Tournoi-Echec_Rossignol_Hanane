@@ -1,3 +1,4 @@
+
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
@@ -127,8 +128,13 @@ class VueRapport:
     @staticmethod
     def affiche_participants(tournoi):
         participants = tournoi['participants']
-        print('')
-        table3 = Table(title='LISTE DES PARTICIPANTS', box=box.ROUNDED)
+        print("""
+
+                """)
+        console.rule(f"[bold cyan]  LISTE DES PARTICIPANTS DU TOURNOI: {tournoi['nom']}  ", style='cyan2')
+        console.print("""
+                """)
+        table3 = Table(box=box.ROUNDED)
         table3.add_column(" Participants ", justify="left", style="yellow")
         table3.add_column(" Classement ", justify="center", style="cyan")
         table3.add_column(" Score ", justify="left", style="yellow")
@@ -142,67 +148,71 @@ class VueRapport:
 # ============================================================== AFFICHE TOURS
 
     @staticmethod
-    def affiche_tours(tournoi):
-        tours = tournoi['tours']
-        console.print('''
-                ''')
-        table = Table(title="LISTE DES TOURS", box=box.ROUNDED)
-
-        table.add_column("Nom", justify="left", style="yellow")
-        table.add_column(" Début ", justify="center", style="magenta", no_wrap=True)
-        table.add_column(" fin ", justify="center", style="blue")
-
-        for i in range(len(tours)):
-            table.add_row(f"{tours[i]['nom']}", f"{tours[i]['debut_tour']}", f"{tours[i]['fin_tour']}")
-
-        return console.print(table, justify="center")
-
-# ======================================================================== AFFICHE MATCHS
-
-    @staticmethod
-    def affiche_matchs(tournoi):
-        tours = tournoi['tours']
+    def affiche_details(tours):
+        """ Affiche les tours et matchs d'un tournoi"""
         liste_tours = []
-        matchs = []
+        time_tours = []
+        liste_matchs = []
+        A = []
+        B = []
+        G = []
         joueurs_A = []
         joueurs_B = []
         gagnants = []
 
-        for i in range(tournoi['nb_tours']):
-            liste_tours.append(tours[i]['liste_matchs'])
-            matchs.append(liste_tours[i])
         for x in range(len(tours)):
+            liste_tours.append(tours[x]['nom'].upper())
+            time_tours.append(f"Début: {tours[x]['debut_tour']} Fin: {tours[x]['fin_tour']}")
+
             for i in range(NB_MATCHS):
-                A = f"{matchs[x][i]['joueur_A']['prenom']} {matchs[x][i]['joueur_A']['nom']}"
-                B = f"{matchs[x][i]['joueur_B']['prenom']} {matchs[x][i]['joueur_B']['nom']}"
+                liste_matchs.append(tours[0]['liste_matchs'][i]['nom'].upper())
+                a = f"""{tours[x]['liste_matchs'][i]['joueur_A']
+                ['prenom']} {tours[x]['liste_matchs'][i]['joueur_A']['nom']}"""
 
-                if matchs[x][i]['gagnant'] is None:
-                    gagnants.append('Match nul')
+                b = f"""{tours[x]['liste_matchs'][i]['joueur_B']
+                ['prenom']} {tours[x]['liste_matchs'][i]['joueur_B']['nom']}"""
+                A.append(a)
+                B.append(b)
+
+                if tours[x]['liste_matchs'][i]['gagnant'] is None:
+                    G.append('Match nul')
                 else:
-                    G = f"""{matchs[x][i]['gagnant']['prenom']} {matchs[x][i]['gagnant']['nom']}
-                    {matchs[x][i]['gagnant']['score']}"""
-                    gagnants.append(G)
-                joueurs_A.append(A)
-                joueurs_B.append(B)
+                    g = f"""{tours[x]['liste_matchs'][i]['gagnant']
+                    ['prenom']} {tours[x]['liste_matchs'][i]['gagnant']['nom']}"""
+                    G.append(g)
 
-# ================================================= affiche le tableau des matchs
-        print("""
-        """)
-        table = Table(title='LISTE DES MATCHS', title_style='cyan2', box=box.SIMPLE, show_header=False)
-        table.add_column(" JOUEUR A ", justify="center")
-        table.add_column(" VS ", justify="center", style="bright_yellow", vertical="middle")
-        table.add_column(" JOUEUR B ", justify="center")
-        table.add_column(" JOUEUR B ", justify="center")
-        table.add_column(" JOUEUR B ", justify="center", vertical="middle")
-        table.add_column(" JOUEUR B ", justify="center")
+        for i in range(0, len(A), 4):
+            joueurs_A.append(A[i: i+4])
+            joueurs_B.append(B[i: i+4])
+            gagnants.append(G[i: i+4])
 
-        for joueur_A, joueur_B, gagnant, in zip(joueurs_A, joueurs_B, gagnants):
-            table.add_row(
-                Panel(f"{joueur_A}", style="dark_slate_gray2", title="joueur A", expand=False),
-                "VS",
-                Panel(f"{joueur_B}", style="plum2", title="joueur B", expand=False),
-                Panel("Qui est le vainqueur ?", style="light_goldenrod2", title="Fin du match", expand=False),
-                "==>",
-                Panel(f" {gagnant} ", title='[white]Gagnant 🏆', style='light_green', expand=False))
+# = tableau
+        for t in range(len(liste_tours)):
+            print("""
+                """)
+            console.rule(f"[bold cyan]  DETAILS DU {liste_tours[t]}  ", style='cyan2')
 
-        return console.print(table, justify="center")
+            console.print(f"""
+            {time_tours[t]}
+
+                """)
+
+            for m in range(NB_MATCHS):
+
+                table= Table(title=f" {liste_matchs[m]}", title_style="bold thistle3", title_justify="left",
+                             box=box.ROUNDED, border_style="bright_black", show_header=False,
+                             show_edge=True, min_width=70)
+
+                table.add_column("", justify="center", vertical="middle")
+                table.add_column("", justify="center", style="light_goldenrod2", vertical="middle")
+                table.add_column("", justify="center", vertical="middle")
+                table.add_column("", justify="center", vertical="middle")
+
+                table.add_row(
+                    Panel(f"{joueurs_A[t][m]}",
+                          style="dark_slate_gray2", title="joueur A", expand=False),
+                    "VS",
+                    Panel(f"{joueurs_B[t][m]}", style="plum2", title="joueur B", expand=False),
+                    Panel(f"{gagnants[t][m]}", title='[white]Gagnant 🏆', style='light_green', expand=False))
+
+                console.print(table, justify="center")

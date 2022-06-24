@@ -23,6 +23,11 @@ class Tournoi:
         self.control_temps = control_temps
         self.remarques = remarques
 
+    def __repr__(self):
+        return f' nom : {self.nom} id : {self.id} date : {self.date} ' \
+               f'nombre tours : {self.nb_tours} controle temps : {self.control_temps}' \
+               f'lieu : {self.lieu} participants : {self.participants} tours : {self.tours}'
+
     def ajout_tours(self, tour):
         self.tours.append(tour)
 

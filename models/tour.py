@@ -77,6 +77,14 @@ class Match():
             resultat.append([a, b])
         return resultat
 
+    def ajout_score(self):
+        if self.gagnant is None:
+            self.joueur_A['score'] += float(0.5)
+            self.joueur_B['score'] += float(0.5)
+
+        else:
+            self.gagnant['score'] += float(1)
+
     @staticmethod
     def recup_score(paire_joueurs):
         """ Récupère les scores des participants """

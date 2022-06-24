@@ -1,6 +1,7 @@
 from rich.console import Console
 from rich.panel import Panel
 from time import sleep
+import re
 
 console = Console()
 
@@ -12,66 +13,71 @@ class VueJoueur:
 
     # ======================================================= INSTANCIATION D'UN JOUEUR
 
-    def prenom(self):
-        prenom = console.input(
-            "\n[cyan2]Veuillez entrer le prénom du joueur[/] : "
-        ).capitalize()
-        try:
-            if len(prenom) <= 2:
-                raise ValueError("le prénom est trop court !")
-            return prenom
-        except Exception as e:
-            print(e)
-            return self.prenom()
-
-    def nom(self):
-        nom = console.input(
-            "\n[cyan2]Veuillez entrer le nom du joueur[/] : "
-        ).capitalize()
-        try:
-            if len(nom) <= 2:
-                raise ValueError("le nom est trop court !")
-            return nom
-        except Exception as e:
-            print(e)
-            return self.nom()
+    def nom(self, case=0):
+        regex = "^[A-Z]{1}[a-z]+$"
+        if case == 1:
+            nom = console.input("\n[cyan2]Veuillez entrer le prénom du joueur[/] : "
+                                ).capitalize()
+        else:
+            nom = console.input("\n[cyan2]Veuillez entrer le nom du joueur[/] : ").capitalize()
+        while True:
+            try:
+                if re.match(regex, nom):
+                    return nom
+                else:
+                    raise ValueError
+            except ValueError:
+                console.print("")
+                console.print(Panel("❌ [bright_red]Desolé vous devez respecter le format"
+                                    " merci de reprendre votre saisie[/]",
+                                    style="bright_red", expand=False))
+            if case == 1:
+                return self.nom(1)
+            else:
+                return self.nom()
 
     def date_naissance(self):
-        date = str(
-            console.input(
-                "\n[cyan2]Veuillez entrer la date de naissance du joueur[/] (au format JJ/MM/AAAA) : "
+        regex = "^[0-9]{1,2}\\/[0-9]{1,2}\\/[0-9]{4}$"
+        date = console.input(
+                "\n[cyan2]Veuillez entrer la date de naissance du joueur[/] [ au format [yellow]JJ/MM/AAAA[/] ] : "
             )
-        )
-
         try:
-            if len(date) <= 2:
-                raise ValueError("la date n'est pas valide !")
-            return date
-        except Exception as e:
-            print(e)
-        return self.date_naissance()
+            if re.match(regex, date):
+                return date
+            else:
+                raise ValueError
+        except ValueError:
+            console.print("")
+            console.print(Panel("❌ [bright_red]Desolé vous devez respecter le format"
+                                " merci de reprendre votre saisie[/]", style="bright_red",
+                                expand=False))
+            return self.date_naissance()
 
     def genre(self):
-        try:
-            genre = console.input(
+        genre = console.input(
                 "\n[cyan2]Veuillez entrer le genre du joueur[/] (M ou F) : "
             ).upper()
-
-            if genre != "M" and genre != "F":
+        print(genre)
+        try:
+            if genre == "M" or genre == "F":
+                return genre
+            else:
                 raise ValueError
-            return genre
         except ValueError:
             print("L'entrée n'est pas valide, veuillez entrer 'M' ou 'F'")
             return self.genre()
 
     def rang(self):
-        rang = int(console.input("\n[cyan2]Veuillez entrer le rang du joueur[/] : "))
+        rang = console.input("\n[cyan2]Veuillez entrer le rang du joueur [yellow](1 à 100)[/][/] : ")
         try:
-            if rang <= 0:
-                raise ValueError("Le rang ne peut être inférieur a 0")
-            return rang
+            rang = int(rang)
+            if (rang > 0) or (rang < LIMITE_RANG) and type(rang) == int:
+                return rang
+            else:
+                raise ValueError
         except ValueError:
-            print("Desolé, l'entrée n'est pas valide !")
+            console.print(Panel("⚠️ [red bold]Votre saisie n'est pas dans l'intervalle autorisé[/]  ",
+                          style="bright_red", expand=False))
             return self.rang()
 
 # ================================================== CHOIX ID POUR MAJ CLASSEMENT
@@ -96,21 +102,16 @@ class VueJoueur:
                                 f"❌ [bright_red]Desolé vous devez entrer [yellow]{NB_MAX_JOUEURS}[/] joueurs,"
                                 " merci de reprendre votre saisie[/]",
                                 style="bright_red",
-                                expand=False,
-                            )
-                        )
+                                expand=False))
                         return VueJoueur.demander_ids(liste_ids_db, int(case))
 
                 else:
                     if (len(ids) <= 0) or (len(ids) > NB_MAX_JOUEURS):
                         console.print(
-                            Panel(
-                                f"""❌ [bright_red]Desolé vous devez entrer
-                                entre [yellow]1 et{NB_MAX_JOUEURS}[/] joueurs, merci de reprendre votre saisie[/]""",
-                                style="bright_red",
-                                expand=False,
-                            )
-                        )
+                            Panel(f" ❌ [bright_red]Desolé vous devez entrer "
+                                  f" entre [yellow]1 et {NB_MAX_JOUEURS}[/] joueurs,"
+                                  " merci de reprendre votre saisie[/]",
+                                  style="bright_red", expand=False))
                         return VueJoueur.demander_ids(liste_ids_db, int(case))
 
                 for id in ids:
@@ -118,7 +119,7 @@ class VueJoueur:
                         console.print(
                             Panel(
                                 f":thinking_face: [bright_red bold]Desolé l'id [yellow]{id}[/]"
-                                f" n'existe pas, merci de reprendre votre saisie[/]",
+                                " n'existe pas, merci de reprendre votre saisie[/]",
                                 style="bright_red",
                                 expand=False,
                             )
@@ -127,19 +128,24 @@ class VueJoueur:
             except ValueError:
                 console.print(
                     Panel(
-                        "❌ [bright_red]Desolé votre saisie n'est pas valide "
+                        " ❌ [bright_red]Desolé votre saisie n'est pas valide "
                         " merci de respecter le format [/]",
                         style="bright_red",
                         expand=False,
                     )
                 )
                 return VueJoueur.demander_ids(liste_ids_db, int(case))
+
             return ids
 
 # ================================================== DEMANDER RANG
 
     @staticmethod
-    def demander_rangs(liste_rangs_db):
+    def demander_rangs(liste_rangs_db, case=0):
+        if case != 0:
+            console.print(
+                Panel("⚠️ [red bold] Desolé le nombre de rangs saisi ne correspond pas au nombre d'id enregistré [/]",
+                      expand=False))
         doublon = []
         while True:
             print("")
@@ -151,80 +157,73 @@ class VueJoueur:
                 if rang in liste_rangs_db:
                     doublon.append(rang)
 
-                    if len(doublon) == 1:
-                        console.print(
-                            Panel(
-                                f"⚠️ [red bold] le rang {doublon[0]} est déjà attribué à un autre joueur[/]",
-                                expand=False,
-                            )
-                        )
-                        confirme_rang = console.input(
-                            "[cyan2] Souhaitez vous confirmer votre choix ?[/] [yellow]( Oui ou Non )[/] : "
-                        ).capitalize()
+            if len(doublon) >= 1:
+                print(doublon)
+                for i in range(len(doublon)):
+                    console.print(Panel(f"⚠️ [red bold] le rang [yellow]{doublon[i]}[/]"
+                                        " est déjà attribué à un autre joueur ",
+                                        style="bright_red", expand=False))
+                console.print("""
+                    """)
+                confirme_rangs = console.input(
+                                    "[cyan2] Souhaitez vous confirmer votre choix ?[/] [yellow]( Oui ou Non )[/] : "
+                                     ).capitalize()
 
-                    if len(doublon) > 1:
-                        for i in range(len(doublon)):
-                            confirme_rangs = console.input(
-                                f"""[cyan2]Attention! le rang {doublon[i]} est déjà attribué à un autre joueur,
-                                souhaitez vous confirmer votre choix ?[/] [yellow]( Oui ou Non )[/] : """
-                            ).capitalize()
-
-                    if confirme_rang or confirme_rangs == "Oui":
-                        rangs.append(rang)
-                        return rangs
-                    if confirme_rang or confirme_rangs == "Non":
-                        continue
-
-                elif rang < 0 or rang > LIMITE_RANG:
-                    print(
-                        f"""
-                    Desolé ce {rang} dépasse la limite"""
-                    )
+                if confirme_rangs == "Oui":
+                    return rangs
+                if confirme_rangs == "Non":
                     return VueJoueur.demander_rangs(liste_rangs_db)
+
+            elif rang < 0 or rang > LIMITE_RANG:
+                console.print(Panel(f"⚠️ [red bold]le rang [yellow]{rang}[/] dépasse la limite autorisée[/]  ",
+                                    style="bright_red", expand=False))
+                return VueJoueur.demander_rangs(liste_rangs_db)
+
             return rangs
 
-# ================================================================ TITRES
+# ================================================================ TITRES, INTRO, MESSAGE
 
     @staticmethod
     def intro_demander_id():
+        console.print("""
+        """)
         console.print(
             Panel(
                 "Vous pouvez changer le rang de [bold]1 à 8[/] joueurs en entrant leur ID \n "
-                "( dans ce format: 1 2 3 4 ) ", style="light_goldenrod2", expand=False,
-            )
-        )
+                " ( dans ce format: 1 2 3 4 ) ", style="light_goldenrod2", expand=False,))
 
     @staticmethod
     def intro_demander_rang():
+        console.print("""
+        """)
         console.print(
             Panel(
-                "Maintenant, entrez le nouveau rang de chaque joueur "
+                "Entrez le nouveau rang de chaque joueur  \n"
                 " ( dans ce format: 10 23 31 9 ) ",
-                style="light_goldenrod2", expand=False,
-            )
-        )
+                style="light_goldenrod2", expand=False,))
 
     @staticmethod
     def fin_classement():
         sleep(2)
-        console.print("")
+        console.print("""
+        """)
         console.print(
             Panel(
-                """Parfait! le rang du joueur a été mis à jour :heavy_check_mark:""",
-                style="light_goldenrod2",
-                expand=False,
-            )
-        )
+                """Parfait! la mise à jour a été prise en compte [bold pink]:heavy_check_mark: [/]""",
+                style="light_green",
+                expand=False))
         sleep(1)
 
     def fin_instance(self):
         sleep(2)
-        console.print("")
+        console.print("""
+
+        """)
         console.print(
             Panel(
-                "Parfait! le joueur a bien été enregistré :heavy_check_mark: ",
-                style="light_goldenrod2",
+                " Parfait ! le joueur a bien été enregistré :heavy_check_mark: ",
+                style="light_green",
                 expand=False,
             )
         )
-        sleep(3)
+        sleep(1)

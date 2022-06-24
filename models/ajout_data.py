@@ -1,11 +1,11 @@
-from tinydb import TinyDB, Query
+from tinydb import TinyDB
 db = TinyDB('db.json', sort_keys=True, indent=4, separators=(',', ': '))
 table_joueurs = db.table('joueurs')
 table_tournois = db.table('tournois')
 
 
 def peupler_db():
-    
+
     """ajout automatique de 10 joueurs et 1 tournoi
      pour peupler la base de données """
 

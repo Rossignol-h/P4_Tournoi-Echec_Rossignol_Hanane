@@ -44,6 +44,7 @@ class Joueur():
         """Récupère une liste de valeur dans la base de donnée
             à partir d'une clé donnée en paramètre ('ID' ou 'rang') """
         liste_db = []
+
         for i in range(len(cls.db)):
             resultat = cls.db.all()[i][str(clé)]
             liste_db.append(resultat)
@@ -53,7 +54,7 @@ class Joueur():
     def maj_rangs__db(cls, liste_ids, liste_rangs):
         """Met à jour les classements des joueurs
             dans la base de donnée """
-            
+
         for id, rang in zip(liste_ids, liste_rangs):
             joueur_db = Query()
             cls.db.update({'rang': rang}, joueur_db.id == id)
@@ -92,6 +93,25 @@ class Participants():
             joueurs_deserialise.append(joueur)
 
         return joueurs_deserialise
+
+    @classmethod
+    def liste_details(cls, clé):
+        """Récupère une liste de valeur dans la base de donnée
+            à partir d'une clé donnée en paramètre ('ID' ou 'rang') """
+        liste_db = []
+        for i in range(len(cls.db)):
+            resultat = cls.db.all()[i][str(clé)]
+            liste_db.append(resultat)
+        return liste_db
+
+    @staticmethod
+    def liste_participants(tournoi, clé):
+        participants = tournoi['participants']
+        liste = []
+
+        for i in range(len(participants)):
+            liste.append(participants[i][clé])
+        return liste
 
     @classmethod
     def ajout_joueurs(cls, joueur):

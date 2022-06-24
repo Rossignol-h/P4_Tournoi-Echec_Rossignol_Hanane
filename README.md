@@ -62,7 +62,7 @@ flake8 --format=html --htmldir=flake-report
 
 #### Now you have in the flake-report folder an index.html file :
 
-open this index.html in your default browser
+open the file index.html in your default browser
 
 
 ## Author

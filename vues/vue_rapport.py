@@ -14,10 +14,11 @@ class VueRapport:
 
     @classmethod
     def rapport_menu(cls):
+        """" Affiche le menu des rapports """
         Menu.ecran_a_zero()
         print("""
         """)
-        console.rule("[bold cyan]  RAPPORTS  ", style='cyan2')
+        console.rule("[bold cyan2]  RAPPORTS  ", style='dark_turquoise')
 
         print("""
         """)
@@ -51,68 +52,82 @@ class VueRapport:
             print("\n Ce choix ne fait pas parti des propositions !\n")
             return VueRapport.rapport_menu()
 
-# ================================================================= TABLEAUX
+# =========================================================== AFFICHAGE DES JOUEURS
 
     @staticmethod
     def affiche_joueurs(liste, case):
+        """" Affiche un tableau des joueurs triés par :
+             nom , rang ou ID """
 
         console.print("""
         """)
-        console.rule("[bold cyan] LISTE DE TOUS LES JOUEURS ENREGISTRÉS ")
+        console.rule("[bold cyan2] LISTE DE TOUS LES JOUEURS ENREGISTRÉS ", style='dark_turquoise')
         console.print("""
         """)
 
         if case == 0:
-            table = Table(title=" Les joueurs triés par nom", box=box.ROUNDED)
-
+            table = Table(title=" Les joueurs triés par nom", box=box.ROUNDED, border_style="bright_black")
         elif case == 1:
-            table = Table(title=" Les joueurs triés par rang", box=box.ROUNDED)
-
+            table = Table(title=" Les joueurs triés par rang", box=box.ROUNDED, border_style="bright_black")
         else:
-            table = Table(title=" Les joueurs triés par ID", box=box.ROUNDED)
+            table = Table(title=" Les joueurs triés par ID", box=box.ROUNDED, border_style="bright_black")
 
-        table.add_column(" ID ", justify="center", style="light_goldenrod2")
+        table.add_column(" ID ", justify="center", style="pink3")
         table.add_column("Classement", justify="center", style="cyan2", no_wrap=True)
-        table.add_column("Joueurs", justify="left", style="cyan")
-        table.add_column("Date de naissance", justify="center", style="light_goldenrod2")
+        table.add_column("Joueurs", justify="left", style="light_goldenrod2")
+        table.add_column("Date de naissance", justify="center", style="turquoise2")
         table.add_column("Genre", justify="center", style="green")
 
         for i in range(len(liste)):
             table.add_row(f'{liste[i]["id"]}', f'{liste[i]["rang"]}', liste[i]["nom"] + ' ' + liste[i]["prenom"],
                           liste[i]["date_naissance"], liste[i]["genre"])
+        console.print("""
 
+        """)
         return console.print(table, justify="center")
+# =========================================================== AFFICHAGE DES TOURNOIS
 
     @staticmethod
     def affiche_tournoi(liste):
-        table1 = Table(title="liste de tous les tournois", box=box.ROUNDED)
-
-        table1.add_column(" ID ", justify="center", style="yellow")
-        table1.add_column("Nom", justify="left", style="green", no_wrap=True)
-        table1.add_column("lieu", justify="center", style="cyan")
-        table1.add_column("Date", justify="center", style="yellow")
-        table1.add_column("Controle de temps", justify="center", style="green")
-        table1.add_column("Nombre de tour", justify="center", style="green")
+        """" Affiche un tableau des tous les tournois """
+        print("""
+        """)
+        console.rule("[bold cyan2]  RAPPORTS  ", style='dark_turquoise')
+        print("""
+        """)
+        table = Table(title="liste de tous les tournois", box=box.ROUNDED)
+        table.add_column(" ID ", justify="center", style="pink3")
+        table.add_column("Nom", justify="left", style="light_goldenrod2", no_wrap=True)
+        table.add_column("lieu", justify="center", style="turquoise2")
+        table.add_column("Date", justify="center", style="dark_sea_green2")
+        table.add_column("Controle de temps", justify="center", style="plum2")
+        table.add_column("Nombre de tour", justify="center", style="light_salmon3")
 
         for i in range(len(liste)):
-            table1.add_row(f'{liste[i]["id"]}', liste[i]["nom"], liste[i]["lieu"],
-                           liste[i]["date"], liste[i]["control_temps"], f'{liste[i]["nb_tours"]}')
+            table.add_row(f'{liste[i]["id"]}', liste[i]["nom"], liste[i]["lieu"],
+                          liste[i]["date"], liste[i]["control_temps"], f'{liste[i]["nb_tours"]}')
+        print("""
+        """)
+        return console.print(table, justify="center")
 
-        return console.print(table1, justify="center")
-
-# ============================================================== DETAILS D'UN TOURNOI
+# =========================================================== DETAILS D'UN TOURNOI
 
     @staticmethod
     def demander_id_tournoi(liste_tournoi):
+        """" Affiche un tableau des joueurs triés par :
+             nom , rang ou ID """
         liste_id_tournoi = []
 
         for i in range(len(liste_tournoi)):
-
             ids = (f'{liste_tournoi[i]["id"]}')
             liste_id_tournoi.append(ids)
-
-        console.print(Panel(" Pour accéder au détails d'un tournoi ", style='light_goldenrod2', expand=False))
+        console.print("""
+        """)
+        console.print(Panel(" Pour accéder au détails d'un tournoi ",
+                      style='light_goldenrod2', expand=False))
         try:
+            console.print("""
+            """)
             id = int(console.input
                      ("[cyan2]Veuillez entrer l'ID du tournoi de votre choix : "))
 
@@ -134,14 +149,14 @@ class VueRapport:
         console.rule(f"[bold cyan]  LISTE DES PARTICIPANTS DU TOURNOI: {tournoi['nom']}  ", style='cyan2')
         console.print("""
                 """)
-        table3 = Table(box=box.ROUNDED)
-        table3.add_column(" Participants ", justify="left", style="yellow")
-        table3.add_column(" Classement ", justify="center", style="cyan")
-        table3.add_column(" Score ", justify="left", style="yellow")
+        table3 = Table(box=box.ROUNDED, border_style="bright_black")
+        table3.add_column(" ID ", justify="left", style="pink3")
+        table3.add_column(" Participants ", justify="left", style="light_goldenrod2")
+        table3.add_column(" Score ", justify="left", style="turquoise2")
 
         for i in range(len(participants)):
-            table3.add_row(participants[i]["prenom"] + ' ' + participants[i]["nom"],
-                           f'{participants[i]["rang"]}', f'{participants[i]["score"]}')
+            table3.add_row(f'{participants[i]["id"]}', participants[i]["prenom"] + ' ' + participants[i]["nom"],
+                           f'{participants[i]["score"]}')
 
         return console.print(table3, justify="center")
 
@@ -198,10 +213,10 @@ class VueRapport:
                 """)
 
             for m in range(NB_MATCHS):
-
-                table= Table(title=f" {liste_matchs[m]}", title_style="bold thistle3", title_justify="left",
-                             box=box.ROUNDED, border_style="bright_black", show_header=False,
-                             show_edge=True, min_width=70)
+                table = Table(title=f" {liste_matchs[m]}", title_style="bold thistle3",
+                              title_justify="left", box=box.ROUNDED,
+                              border_style="bright_black", show_header=False,
+                              show_edge=True, min_width=70)
 
                 table.add_column("", justify="center", vertical="middle")
                 table.add_column("", justify="center", style="light_goldenrod2", vertical="middle")

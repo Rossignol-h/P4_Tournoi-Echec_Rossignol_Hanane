@@ -19,8 +19,8 @@ class RapportModel:
 
     @classmethod
     def import_tournoi(cls, id):
-        """ Retourne un tournoi de la base de donnée 
-            à partir de l'ID donné en paramètre """
+        """ Retourne un tournoi de la base de donnée
+        à partir de l'ID donné en paramètre """
         query = Query()
         resultat = cls.table_tournois.search(query.id == id)
         tournoi = resultat[0]

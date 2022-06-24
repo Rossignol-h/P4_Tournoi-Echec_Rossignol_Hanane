@@ -17,7 +17,7 @@ import sys
 now = datetime.now()
 
 
-class Contrôleur:
+class Controleur:
     """Main controller."""
 
     def __init__(self):
@@ -37,16 +37,16 @@ class Contrôleur:
             choix = Menu.menu_principal()
 
             if choix == 1:
-                Contrôleur.creation_tournoi(self)
+                Controleur.creation_tournoi(self)
 
             elif choix == 2:
-                Contrôleur.ajout_joueur(self)
+                Controleur.ajout_joueur(self)
 
             elif choix == 3:
-                Contrôleur.maj_classement(self)
+                Controleur.maj_joueurs(self)
 
             elif choix == 4:
-                Contrôleur.execute_rapport(self)
+                Controleur.execute_rapport(self)
 
             elif choix == 5:
                 return sys.exit()
@@ -56,7 +56,7 @@ class Contrôleur:
 # ===================================================================== JOUEURS
 
     def instance_joueur(self):
-        prenom = self.vue_joueur.prenom()
+        prenom = self.vue_joueur.nom(1)
         nom = self.vue_joueur.nom()
         date_naissance = self.vue_joueur.date_naissance()
         genre = self.vue_joueur.genre()
@@ -71,27 +71,52 @@ class Contrôleur:
 
 # ============================================================ MAJ CLASSEMENT JOUEURS
 
-    def maj_classement(self):
-        Menu.ecran_a_zero()
-        self.affiche_joueurs()
+    def maj_rang_joueurs(self, tournoi=None, case=0):
 
-        liste_id_db = self.models_joueur.liste_db("id")
-        self.vue_joueur.intro_demander_id()
-        liste_ids = self.vue_joueur.demander_ids(liste_id_db, 1)
+        if case == 0 and tournoi is None:
+            ids = Joueur.liste_db("id")
+            rangs = Joueur.liste_db("rang")
 
-        liste_rang_db = self.models_joueur.liste_db("rang")
-        self.vue_joueur.intro_demander_rang()
-        liste_rangs = self.vue_joueur.demander_rangs(liste_rang_db)
+        else:
+            tournoi = self.models_rapport.import_tournoi(tournoi['id'])
+            ids = Participants.liste_participants(tournoi, 'id')
+            rangs = self.models_participants.liste_participants(tournoi, 'rang')
 
-        self.models_joueur.maj_rangs__db(liste_ids, liste_rangs)
-        self.vue_joueur.fin_classement()
-        self.affiche_joueurs()
+        VueJoueur.intro_demander_id()
+        liste_ids = VueJoueur.demander_ids(ids, 1)
+        VueJoueur.intro_demander_rang()
+        liste_rangs = VueJoueur.demander_rangs(rangs)
+        while True:
+            if len(liste_ids) != len(liste_rangs):
+                liste_rangs = VueJoueur.demander_rangs(rangs, 1)
+            else:
+                Joueur.maj_rangs__db(liste_ids, liste_rangs)
 
-        Menu.retour_menu()
+            return VueJoueur.fin_classement()
 
-    def affiche_joueurs(self):
-        joueurs = RapportModel.db_liste_tri(RapportModel.table_joueurs, 'id')
-        return self.vue_rapport.affiche_joueurs(joueurs, 2)
+    def maj_joueurs(self):
+        while True:
+            Menu.ecran_a_zero()
+            self.affiche_joueurs()
+            self.maj_rang_joueurs()
+            self.affiche_joueurs()
+            reponse = Menu.continuer_ou_menu()
+            if reponse == 1:
+                break
+            else:
+                return self.execution_programme()
+
+# ====================================================== AFFICHAGE INFOS JOUEURS
+
+    def affiche_joueurs(self, tournoi=None, case=0):
+        if (case == 0) and (tournoi is None):
+            joueurs = RapportModel.db_liste_tri(RapportModel.table_joueurs, 'id')
+        else:
+            tournoi = self.models_rapport.import_tournoi(tournoi['id'])
+            ids = Participants.liste_participants(tournoi, 'id')
+            joueurs = self.models_participants.recup_joueur_id(ids)
+
+        return VueRapport.affiche_joueurs(joueurs, 2)
 
 # ===================================================================== CREATION TOURNOIS
 
@@ -105,10 +130,12 @@ class Contrôleur:
         Menu.ecran_a_zero()
         self.vue_tour.titre_tour()
         self.lancer_tour(nouveau_tournoi)
+        self.execute_rapport(3)
 
 # ============================================================= AJOUT PARTICIPANTS
 
     def ajout_participants(self):
+        """ Ajoute les participants un tournoi """
 
         liste_id_db = self.models_joueur.liste_db("id")
         self.vue_tournoi.intro_ajout_joueurs()
@@ -122,6 +149,7 @@ class Contrôleur:
 # ============================================================= INSTANCIATION TOURNOI
 
     def instance_tournoi(self):
+        """ Instancie un tournoi"""
         participants = self.ajout_participants()
         nom = self.vue_tournoi.nom_tournoi()
         lieu = self.vue_tournoi.lieu_tournoi()
@@ -134,6 +162,7 @@ class Contrôleur:
 # =============================================================== LANCER UN TOUR
 
     def lancer_tour(self, tournoi):
+        """ Lance un tour avec gestion des participants et matchs """
         Participants.ajout_joueurs(tournoi.participants)
         participants = Participants.liste[0]
 
@@ -165,38 +194,39 @@ class Contrôleur:
             for match in tour.liste_matchs:
                 match.gagnant = self.vue_tour.demander_gagnant(match)
                 match.ajout_score()
-            
+
             time2 = datetime.now()
             tour.fin_timestamp(int(datetime.timestamp(time2)))
 
             tournoi.ajout_tours(tour)
             tournoi.maj_tournoi__db()
 
-# ================================================== FIN DU TOURNOI
-
         VueTour.titre_fin_tournoi()
-        return self.execution_programme()
 
 # ================================================================ RAPPORTS
 
-    def execute_rapport(self):
+    def execute_rapport(self, choix1=0):
+        """ Affiche le menu et les différents rapports """
         Menu.ecran_a_zero()
         while True:
-            choice = VueRapport.rapport_menu()
+            if choix1 > 0:
+                choix = choix1
+            else:
+                choix = VueRapport.rapport_menu()
 
-            if choice == 1:
+            if choix == 1:
                 Menu.ecran_a_zero()
                 list_joueurs_db = RapportModel.db_liste_tri(RapportModel.table_joueurs, 'nom')
                 self.vue_rapport.affiche_joueurs(list_joueurs_db, 0)
                 Menu.retour_menu()
 
-            elif choice == 2:
+            elif choix == 2:
                 Menu.ecran_a_zero()
                 list_joueurs_db = RapportModel.db_liste_tri(RapportModel.table_joueurs, 'rang')
                 self.vue_rapport.affiche_joueurs(list_joueurs_db, 1)
                 Menu.retour_menu()
 
-            elif choice == 3:
+            elif choix == 3:
                 Menu.ecran_a_zero()
                 list_tournois_db = RapportModel.db_liste_tri(RapportModel.table_tournois, 'id')
 
@@ -211,20 +241,21 @@ class Contrôleur:
                     Menu.ecran_a_zero()
                     self.vue_rapport.affiche_details(tournoi['tours'])
                     self.vue_rapport.affiche_participants(tournoi)
-
+                    self.affiche_joueurs(tournoi, 1)
+                    self.maj_rang_joueurs(tournoi, 1)
+                    self.affiche_joueurs(tournoi, 1)
                     Menu.retour_menu()
 
-            elif choice == 5:
-                Contrôleur.execution_programme(self)
+            elif choix == 4:
+                Controleur.execution_programme()
 
             else:
                 # VueTour.message_erreur()
                 return
-
-
 # ============================================================== FIN
 
-controller = Contrôleur()
+
+controleur = Controleur()
 
 
-controller.execution_programme()
+controleur.execution_programme()

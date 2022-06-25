@@ -48,6 +48,7 @@ class VueTournoi:
 
     def nb_tour(self):
         regex = "^[1-5]{1}$"
+        regex2 = r"^[0\s]{1}$"
         console.print('')
         nb_tour = (console.input(
             "[cyan2]Veuillez entrer le nombre de tour \n"
@@ -56,7 +57,7 @@ class VueTournoi:
             try:
                 if re.match(regex, nb_tour):
                     return nb_tour
-                elif nb_tour == '0' or ' ':
+                elif re.match(regex2, nb_tour):
                     return '4'
                 else:
                     raise ValueError

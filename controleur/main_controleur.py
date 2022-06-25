@@ -184,18 +184,16 @@ class Controleur:
 
         for i in range(int(tournoi.nb_tours)):
             if i == 0:
-                participants_tri = RapportModel.db_liste_tri(participants, 'rang')
-                paire_joueurs = Match.match_tour1(participants_tri)
+                participants_tri1 = RapportModel.db_liste_tri(participants, 'rang')
+                paire_joueurs = Match.match_tour1(participants_tri1)
             else:
                 liste_scores = Match.recup_score(paire_joueurs)
-
                 if Match.verifie_doublon(liste_scores):
-                    participants_tri = RapportModel.db_liste_tri(participants, 'rang')
-
+                    participants_tri2 = RapportModel.db_liste_tri(participants, 'rang')
                 else:
-                    participants_tri = RapportModel.db_liste_tri(participants, 'score')
+                    participants_tri2 = RapportModel.db_liste_tri(participants, 'score')
 
-                paire_joueurs = Match.match_tour_suivant(participants_tri, tournoi)
+                paire_joueurs = Match.match_tour_suivant(participants_tri2, tournoi)
 
             tour = Tour(i+1)
 

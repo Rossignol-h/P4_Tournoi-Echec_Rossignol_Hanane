@@ -105,10 +105,12 @@ class VueRapport:
         table.add_column("Date", justify="center", style="dark_sea_green2")
         table.add_column("Controle de temps", justify="center", style="plum2")
         table.add_column("Nombre de tour", justify="center", style="light_salmon3")
+        table.add_column("Remarques", justify="center", style="white")
 
         for i in range(len(liste)):
             table.add_row(f'{liste[i]["id"]}', liste[i]["nom"], liste[i]["lieu"],
-                          liste[i]["date"], liste[i]["control_temps"], f'{liste[i]["nb_tours"]}')
+                          liste[i]["date"], liste[i]["control_temps"],
+                          f'{liste[i]["nb_tours"]}', f'{liste[i]["remarques"]}')
         print("""
         """)
         return console.print(table, justify="center")

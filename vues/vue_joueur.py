@@ -75,12 +75,12 @@ class VueJoueur:
         rang = console.input("\n[cyan2]Veuillez entrer le rang du joueur [yellow](1 à 100)[/][/] : ")
         try:
             rang = int(rang)
-            if (rang > 0) or (rang < LIMITE_RANG) and type(rang) == int:
+            if (rang > 0) and (rang < LIMITE_RANG) and type(rang) == int:
                 return rang
             else:
                 raise ValueError
         except ValueError:
-            console.print(Panel("⚠️ [red bold]Votre saisie n'est pas dans l'intervalle autorisé[/]  ",
+            console.print(Panel("⚠️ [red bold]Votre saisie est invalide ou dépasse la limite autorisée[/]  ",
                           style="bright_red", expand=False))
             return self.rang()
 

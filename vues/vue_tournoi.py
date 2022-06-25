@@ -50,18 +50,21 @@ class VueTournoi:
         regex = "^[1-5]{1}$"
         console.print('')
         nb_tour = (console.input(
-            f"""[cyan2]Veuillez entrer le nombre de tour un chiffre de 1 à {NOMBRE_TOUR}
-            (4 par défaut ) : """))
+            "[cyan2]Veuillez entrer le nombre de tour \n"
+            f"un chiffre de [bright_yellow]1 à {NOMBRE_TOUR} (4 par défaut ) [/] : "))
         while True:
             try:
                 if re.match(regex, nb_tour):
                     return nb_tour
+                elif nb_tour == '0' or ' ':
+                    return '4'
                 else:
                     raise ValueError
             except ValueError:
                 console.print("")
                 console.print(Panel(
-                    f"❌ [bright_red]Le chiffre n'est pas dans l'intervalle [bright_yellow]1 à {NOMBRE_TOUR}[/] !"
+                    "❌ [bright_red]L'entrée n'est pas correcte"
+                    f" ou le chiffre n'est pas dans l'intervalle [bright_yellow]1 à {NOMBRE_TOUR}[/] !"
                     " merci de reprendre votre saisie[/]",
                     style="bright_red", expand=False))
                 return self.nb_tour()
@@ -71,7 +74,7 @@ class VueTournoi:
         try:
             console.print('')
             control_temps = (console.input(
-                "[cyan2]Veuillez entrer le controle de temps (bullet, blitz ou rapide ?)[/] : "
+                "[cyan2]Veuillez entrer le controle de temps [ [bright_yellow]bullet, blitz ou rapide[/] ?][/] : "
             )
             ).lower()
 
@@ -88,10 +91,11 @@ class VueTournoi:
 
     def remarques(self):
         try:
-            remarques = (console.input(f"""[cyan2]
-            Avez vous des remarques à ajouter ?
-            (si oui: merci de ne pas dépasser {LIMITE_MAX} caractères)
-            (Sinon : tapez entrer)[/] : """)).lower()
+            console.print("")
+            remarques = (console.input("[cyan2]Avez vous des remarques à ajouter ? \n"
+                                       "( Si oui: merci de ne pas dépasser "
+                                       f"[bright_yellow]{LIMITE_MAX} caractères[/] ) \n"
+                                       "( Sinon : tapez entrer)[/] : ")).lower()
 
             if len(remarques) < LIMITE_MAX:
                 return remarques

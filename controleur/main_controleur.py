@@ -72,49 +72,64 @@ class Controleur:
 # ============================================================ MAJ CLASSEMENT JOUEURS
 
     def maj_rang_joueurs(self, tournoi=None, case=0):
+        """ Met à jour le rang des joueurs de son choix
+        case == 0 : pour la mise à jour à partir du menu principal
+        case !0 : pour la mise à jour à la fin d'un tournoi"""
 
         if case == 0 and tournoi is None:
             ids = Joueur.liste_db("id")
             rangs = Joueur.liste_db("rang")
 
         else:
-            tournoi = self.models_rapport.import_tournoi(tournoi['id'])
+            tournoi = self.models_rapport.import_tournoi(tournoi.id)
             ids = Participants.liste_participants(tournoi, 'id')
             rangs = self.models_participants.liste_participants(tournoi, 'rang')
 
+# = On demande les ids et les nouveaux rang
         VueJoueur.intro_demander_id()
         liste_ids = VueJoueur.demander_ids(ids, 1)
         VueJoueur.intro_demander_rang()
         liste_rangs = VueJoueur.demander_rangs(rangs)
+
+# = Vérifie si le nombre d'ids est differents du nombre de rangs
+
         while True:
             if len(liste_ids) != len(liste_rangs):
                 liste_rangs = VueJoueur.demander_rangs(rangs, 1)
             else:
                 Joueur.maj_rangs__db(liste_ids, liste_rangs)
-
             return VueJoueur.fin_classement()
 
-    def maj_joueurs(self):
+# ================================================
+
+    def maj_joueurs(self, tournoi=None, case=0):
+        """ Gère l'affichage et l'ordre de la mise à jour du rang
+            d'un joueur """
         while True:
             Menu.ecran_a_zero()
-            self.affiche_joueurs()
-            self.maj_rang_joueurs()
+            self.affiche_joueurs(tournoi, case)
+            self.maj_rang_joueurs(tournoi, case)
             self.affiche_joueurs()
             reponse = Menu.continuer_ou_menu()
             if reponse == 1:
-                break
+                continue
             else:
                 return self.execution_programme()
 
 # ====================================================== AFFICHAGE INFOS JOUEURS
 
     def affiche_joueurs(self, tournoi=None, case=0):
+        """ Gère l'affichage du tableau des joueurs
+            case == 0 : affiche la liste complète des joueurs de la bd
+            case !0 : affiche la liste des 8 participants d'un tournoi """
+
         if (case == 0) and (tournoi is None):
             joueurs = RapportModel.db_liste_tri(RapportModel.table_joueurs, 'id')
         else:
-            tournoi = self.models_rapport.import_tournoi(tournoi['id'])
+            tournoi = self.models_rapport.import_tournoi(tournoi.id)
             ids = Participants.liste_participants(tournoi, 'id')
             joueurs = self.models_participants.recup_joueur_id(ids)
+            self.vue_rapport.affiche_participants(tournoi)
 
         return VueRapport.affiche_joueurs(joueurs, 2)
 
@@ -130,12 +145,13 @@ class Controleur:
         Menu.ecran_a_zero()
         self.vue_tour.titre_tour()
         self.lancer_tour(nouveau_tournoi)
-        self.execute_rapport(3)
+        self.maj_joueurs(nouveau_tournoi, 1)
 
 # ============================================================= AJOUT PARTICIPANTS
 
     def ajout_participants(self):
-        """ Ajoute les participants un tournoi """
+        """ Retourne une liste de participants à un tournoi
+            à partir des ids donnés par l'utilisateur"""
 
         liste_id_db = self.models_joueur.liste_db("id")
         self.vue_tournoi.intro_ajout_joueurs()
@@ -241,13 +257,10 @@ class Controleur:
                     Menu.ecran_a_zero()
                     self.vue_rapport.affiche_details(tournoi['tours'])
                     self.vue_rapport.affiche_participants(tournoi)
-                    self.affiche_joueurs(tournoi, 1)
-                    self.maj_rang_joueurs(tournoi, 1)
-                    self.affiche_joueurs(tournoi, 1)
                     Menu.retour_menu()
 
             elif choix == 4:
-                Controleur.execution_programme()
+                self.execution_programme()
 
             else:
                 # VueTour.message_erreur()

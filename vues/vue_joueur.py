@@ -57,14 +57,18 @@ class VueJoueur:
         genre = console.input(
                 "\n[cyan2]Veuillez entrer le genre du joueur[/] (M ou F) : "
             ).upper()
-        print(genre)
+
         try:
             if genre == "M" or genre == "F":
                 return genre
             else:
                 raise ValueError
         except ValueError:
-            print("L'entrée n'est pas valide, veuillez entrer 'M' ou 'F'")
+            console.print("")
+            console.print(Panel("❌ [bright_red]L'entrée n'est pas valide, veuillez entrer [bright_yellow][ M ou F ][/]"
+                                " merci de reprendre votre saisie[/]", style="bright_red",
+                                expand=False))
+            print("")
             return self.genre()
 
     def rang(self):
@@ -158,7 +162,6 @@ class VueJoueur:
                     doublon.append(rang)
 
             if len(doublon) >= 1:
-                print(doublon)
                 for i in range(len(doublon)):
                     console.print(Panel(f"⚠️ [red bold] le rang [yellow]{doublon[i]}[/]"
                                         " est déjà attribué à un autre joueur ",

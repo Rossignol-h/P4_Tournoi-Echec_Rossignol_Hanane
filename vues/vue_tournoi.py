@@ -2,8 +2,6 @@ from rich.console import Console
 from vues.vue_menu import Menu
 from rich.panel import Panel
 from rich import print
-from time import sleep
-import datetime
 import re
 console = Console()
 
@@ -15,133 +13,108 @@ class VueTournoi:
 
     def nom_tournoi(self):
         console.print('')
-        nom = str(console.input
-                  ("[cyan2]Veuillez entrer le nom du tournoi[/] : ")).capitalize()
-        try:
-            if len(nom) <= 2:
-                raise ValueError("Ce nom est trop court ou incorrect")
-            return nom
-        except Exception as e:
-            print(e)
-            return self.nom_tournoi()
-
-    @staticmethod
-    def lieu_tournoi():
-        regex = r"^[A-Za-z]*"
-        filtre = re.compile(regex)
-        console.print('')
-        lieu = str(console.input
-                   ("[cyan2]Veuillez entrer le lieu du tournoi[/] : ")).capitalize()
-        while filtre.search(lieu) is None:
-            lieu = str(console.input
-                       ("[cyan2]Veuillez entrer le lieu du tournoi[/] : ")).capitalize()
-        return lieu
-
-    @staticmethod
-    def date_tournoi():
+        regex = "^[A-Z]{1}[a-z]+$"
+        nom = (console.input("[cyan2]Veuillez entrer le nom du tournoi[/] : ")).capitalize()
         while True:
-            console.print('')
-            date = str(console.input
-                       ("[cyan2]'Veuillez entrer la date du tournoi au format JJ/MM/AAAA[/] : ")).upper()
             try:
-                date = datetime.datetime.strptime(date, "%d/%m/%Y")
-                break
+                if re.match(regex, nom):
+                    return nom
+                else:
+                    raise ValueError
             except ValueError:
-                print("Veuillez entrer une date valide au format JJ/MM/AAAA ")
-        return date
+                console.print("")
+                console.print(Panel("❌ [bright_red]Desolé le nom saisi est incorrect"
+                                    " merci de reprendre votre saisie[/]",
+                                    style="bright_red", expand=False))
+                return self.nom_tournoi()
 
-        # récupération du nom du round
-    @staticmethod
-    def nb_tour():
+    def lieu_tournoi(self):
+        regex = "^[A-Z]{1}[a-z]+$"
+        console.print('')
+        lieu = (console.input("[cyan2]Veuillez entrer le lieu du tournoi[/] : ")
+                ).capitalize()
+        while True:
+            try:
+                if re.match(regex, lieu):
+                    return lieu
+                else:
+                    raise ValueError
+            except ValueError:
+                console.print("")
+                console.print(Panel("❌ [bright_red]Desolé le lieu saisi est incorrect"
+                                    " merci de reprendre votre saisie[/]",
+                                    style="bright_red", expand=False))
+                return self.lieu_tournoi()
+
+    def nb_tour(self):
+        regex = "^[1-5]{1}$"
+        console.print('')
+        nb_tour = (console.input(
+            f"""[cyan2]Veuillez entrer le nombre de tour un chiffre de 1 à {NOMBRE_TOUR}
+            (4 par défaut ) : """))
+        while True:
+            try:
+                if re.match(regex, nb_tour):
+                    return nb_tour
+                else:
+                    raise ValueError
+            except ValueError:
+                console.print("")
+                console.print(Panel(
+                    f"❌ [bright_red]Le chiffre n'est pas dans l'intervalle [bright_yellow]1 à {NOMBRE_TOUR}[/] !"
+                    " merci de reprendre votre saisie[/]",
+                    style="bright_red", expand=False))
+                return self.nb_tour()
+
+    def control_temps(self):
+        regex = "^bullet$|^blitz$|^rapide$"
         try:
             console.print('')
-            nb_tour = int(console.input(
-                f"""[cyan2]Veuillez entrer le nombre de tour un chiffre de 1 à {NOMBRE_TOUR}
-                (4 par défaut ) : """))
-
-            if nb_tour < 1 or nb_tour > NOMBRE_TOUR:
-                raise ValueError
-            return nb_tour
-        except ValueError:
-            print(f"Le chiffre n'est pas dans l'intervalle 1 à {NOMBRE_TOUR} !")
-            return VueTournoi.nb_tour()
-
-    @staticmethod
-    def control_temps():
-        try:
-            console.print('')
-            control_temps = str(console.input(
+            control_temps = (console.input(
                 "[cyan2]Veuillez entrer le controle de temps (bullet, blitz ou rapide ?)[/] : "
             )
             ).lower()
 
-            if control_temps == "bullet" or control_temps == "blitz" or control_temps == "rapide":
+            if re.match(regex, control_temps):
                 return control_temps
             else:
                 raise ValueError
         except ValueError:
-            print("""
-                Desolé votre saisie n'est pas valide ! """)
-            return VueTournoi.control_temps()
+            console.print("")
+            console.print(Panel("❌ [bright_red]Veuillez respecter le format attendu"
+                                " merci de reprendre votre saisie[/]",
+                                style="bright_red", expand=False))
+            return self.control_temps()
 
-    @staticmethod
-    def remarques():
+    def remarques(self):
         try:
-            remarques = str(console.input(f"""[cyan2]
+            remarques = (console.input(f"""[cyan2]
             Avez vous des remarques à ajouter ?
             (si oui: merci de ne pas dépasser {LIMITE_MAX} caractères)
             (Sinon : tapez entrer)[/] : """)).lower()
 
-            if len(remarques) > LIMITE_MAX:
+            if len(remarques) < LIMITE_MAX:
+                return remarques
+            else:
                 raise ValueError
-            return remarques
         except ValueError:
-            print("Desolé vous avez dépassé la limite autorisée !")
-            return VueTournoi.remarques()
-
-    @staticmethod
-    def choix_id_tournoi(intervalle):
-        console.rule(style="rule.line, red")
-
-        try:
-            choix = int(input(
-                """
-                Veuillez entrer l'ID du tournoi de votre choix : """))
-            if choix < 0 or choix > intervalle:
-                raise ValueError
-            print("Merci le tournoi va commencer ...")
-            return choix
-        except ValueError:
-            print("Desolé votre saisie n'est pas valide !")
-            return VueTournoi.choix_id_tournoi(intervalle)
+            console.print("")
+            console.print(Panel("❌ [bright_red]Desolé vous avez dépassé la limite autorisée"
+                                " merci de reprendre votre saisie[/]",
+                                style="bright_red", expand=False))
+            return self.remarques()
 
 # ================================================================ TITRES
 
     @staticmethod
     def titre_tournoi():
         Menu.ecran_a_zero()
-        console.rule("[bold cyan]  CREATION DU TOURNOI  ")
+        console.rule("[bold cyan2]  CREATION DU TOURNOI  ", style="dark_turquoise")
         print("""
-
         """)
 
     @staticmethod
     def intro_ajout_joueurs():
-        console.print(
-            Panel(
-                """Veuillez ajouter 8 joueurs
-                ( dans ce format: 1 2 3 4 5 6 7 8 ) """,
-                style='light_goldenrod2', expand=False
-            )
-        )
-
-    @staticmethod
-    def intro_joueurs_valide():
-        sleep(1)
-        console.print('''
-                ''')
-        console.print(
-            Panel(
-                """Parfait! les 8 joueurs sont enregistrés :heavy_check_mark:""",
-                style='light_goldenrod2', expand=False
-            ))
+        console.print(Panel(" Veuillez ajouter 8 joueurs \n"
+                            " [ dans ce format: 1 2 3 4 5 6 7 8 ] ",
+                            style='light_goldenrod2', expand=False))

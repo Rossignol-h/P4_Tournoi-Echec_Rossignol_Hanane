@@ -60,7 +60,7 @@ python main.py
 flake8 --format=html --htmldir=flake-report
 ```
 
-#### Now you have in the flake-report folder an index.html file :
+#### Now you have in the new generated flake-report folder an index.html file :
 
 open the file index.html in your default browser
 

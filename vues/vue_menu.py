@@ -46,7 +46,6 @@ class Menu():
     @staticmethod
     def ecran_a_zero():
         """ Efface tout l'affichage de l'écran """
-
         os.system('cls' if os.name == 'nt' else 'clear')
 
     @staticmethod
@@ -80,11 +79,14 @@ class Menu():
 
         try:
             choix = int(console.input
-                        (" ⭐️ [cyan2]Veuillez faire votre choix[/] [bright_yellow](1,2,3,4 ou 5)[/] : "))
+                        (" [cyan2]Veuillez faire votre choix[/] [bright_yellow](1,2,3,4 ou 5)[/] : "))
 
-            if choix < 1 or choix > 5:
+            if choix > 1 or choix < 5:
+                return choix
+            else:
                 raise ValueError
-            return choix
         except ValueError:
-            print("\n Ce choix ne fait pas parti des propositions !\n")
-        return Menu.menu_principal()
+            print("\n \n")
+            console.print(Panel(" ❌ [red bold] Ce choix ne fait pas parti des propositions ![/] ",
+                                style="bright_red", expand=False))
+            return Menu.menu_principal()

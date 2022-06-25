@@ -58,8 +58,3 @@ class Tournoi:
         """ Met à jour le tournoi dans la base de donnée """
         tournoi_db = Query()
         table_tournois.update(self.serialisation(), tournoi_db.id == self.id)
-
-    def recup_id_tournoi(self, nom=str):
-        """ Récupère l'id du tournoi dans la base de donnée """
-        doc = table_tournois.search(Tournoi(nom) == self.nom)
-        return doc[0].doc_id

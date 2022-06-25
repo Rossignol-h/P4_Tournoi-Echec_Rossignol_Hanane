@@ -1,9 +1,9 @@
 
 from rich.console import Console
+from vues.vue_menu import Menu
 from rich.table import Table
 from rich.panel import Panel
 from rich import box, print
-from vues.vue_menu import Menu
 
 console = Console()
 
@@ -43,13 +43,16 @@ class VueRapport:
             console.print("""
             """)
             choix = int(console.input
-                        (" ⭐️ [cyan2]Veuillez faire votre choix[/] [bright_yellow](1,2,3 ou 4)[/] : "))
+                        (" [cyan2]Veuillez faire votre choix[/] [bright_yellow](1,2,3 ou 4)[/] : "))
 
-            if choix < 1 or choix > 4:
+            if choix > 1 or choix < 4:
+                return choix
+            else:
                 raise ValueError
-            return choix
         except ValueError:
-            print("\n Ce choix ne fait pas parti des propositions !\n")
+            print("\n \n")
+            console.print(Panel(" ❌ [red bold] Ce choix ne fait pas parti des propositions ![/] ",
+                                style="bright_red", expand=False))
             return VueRapport.rapport_menu()
 
 # =========================================================== AFFICHAGE DES JOUEURS
@@ -61,7 +64,7 @@ class VueRapport:
 
         console.print("""
         """)
-        console.rule("[bold cyan2] LISTE DE TOUS LES JOUEURS ENREGISTRÉS ", style='dark_turquoise')
+        console.rule("[bold cyan2] LISTE DES JOUEURS ENREGISTRÉS ", style="dark_turquoise")
         console.print("""
         """)
 
@@ -114,8 +117,7 @@ class VueRapport:
 
     @staticmethod
     def demander_id_tournoi(liste_tournoi):
-        """" Affiche un tableau des joueurs triés par :
-             nom , rang ou ID """
+        """" Affiche un tableau des tournois """
         liste_id_tournoi = []
 
         for i in range(len(liste_tournoi)):
@@ -133,9 +135,12 @@ class VueRapport:
 
             if str(id) in liste_id_tournoi:
                 return id
-            raise ValueError
+            else:
+                raise ValueError
         except ValueError:
-            print("Desolé votre saisie n'est pas valide !")
+            print("\n \n")
+            console.print(Panel(" ❌ [red bold] Desolé votre saisie n'est pas valide ![/] ",
+                                style="bright_red", expand=False))
             return VueRapport.demander_id_tournoi(liste_tournoi)
 
 # ============================================================ AFFICHE PARTICIPANTS
@@ -150,7 +155,7 @@ class VueRapport:
         console.print("""
                 """)
         table3 = Table(box=box.ROUNDED, border_style="bright_black")
-        table3.add_column(" ID ", justify="left", style="pink3")
+        table3.add_column(" ID ", justify="center", style="pink3")
         table3.add_column(" Participants ", justify="left", style="light_goldenrod2")
         table3.add_column(" Score ", justify="left", style="turquoise2")
 

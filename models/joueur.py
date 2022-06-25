@@ -94,16 +94,6 @@ class Participants():
 
         return joueurs_deserialise
 
-    @classmethod
-    def liste_details(cls, clé):
-        """Récupère une liste de valeur dans la base de donnée
-            à partir d'une clé donnée en paramètre ('ID' ou 'rang') """
-        liste_db = []
-        for i in range(len(cls.db)):
-            resultat = cls.db.all()[i][str(clé)]
-            liste_db.append(resultat)
-        return liste_db
-
     @staticmethod
     def liste_participants(tournoi, clé):
         participants = tournoi['participants']

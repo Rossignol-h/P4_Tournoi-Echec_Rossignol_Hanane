@@ -19,7 +19,8 @@ class VueTour:
 
                 ''')
         table = Table(title=f" VOICI LES MATCHS DU {nom_tour} ",
-                      box=box.ROUNDED, show_edge=True, show_header=False, title_justify="left")
+                      box=box.ROUNDED, show_edge=True,
+                      show_header=False, title_justify="left", border_style="grey23")
         table.add_column(justify="left", vertical="middle")
         table.add_column(justify="center", no_wrap=True, style="bright_yellow")
         table.add_column(justify="center", vertical="middle")
@@ -35,7 +36,7 @@ class VueTour:
 
             table.add_row("")
             table.add_row(f"[white]{nom}[/]",
-                          Panel(f"[white]{joueur_A}[/]",
+                          Panel(f"{joueur_A}",
                                 padding=(1, 3),
                                 style="medium_purple1",
                                 title="joueur A",
@@ -43,7 +44,7 @@ class VueTour:
                                 subtitle_align="right",
                                 expand=False),
                           " [yellow1 bold]VS ",
-                          Panel(f"[white]{joueur_B}",
+                          Panel(f"{joueur_B}",
                                 padding=(1, 3),
                                 style="medium_spring_green",
                                 title="joueur B",
@@ -66,10 +67,7 @@ class VueTour:
         sleep(2)
         console.print('''
                 ''')
-
-        console.rule("[bold orchid1] LORSQUE LE " f"{nom_match}" " SERA FINI"
-                     " MERCI DE SAISIR LE RESULTAT ", align="left", style='orchid1')
-
+        console.rule("[light_pink1] LE " f"{nom_match}" " EST EN COURS... ", align="left", style="pink3")
         console.print('''
                 ''')
         table3 = Table(title=f"{nom_match}", title_style="cyan2 bold", box=box.SIMPLE, show_header=False)
@@ -84,19 +82,29 @@ class VueTour:
         console.print(table3, justify="center")
 
         try:
-
             table3 = Table(title='', box=box.SIMPLE, show_header=False)
-            table3.add_column(" JOUEUR A ", justify="center")
-            table3.add_row(Panel(f"{joueur_A}", style="cornflower_blue", title="joueur A", expand=False))
+            table3.add_column(" ", justify="center")
+            table3.add_column(" ", justify="center")
+            table3.add_column(" ", justify="center")
+
+            console.print('''
+                ''')
+            console.rule("[light_pink1] LORSQUE LE " f"{nom_match}" " SERA TERMINE "
+                         " ENTREZ LE RESULTAT DU JOUEUR A", align="left", style="pink3")
+            console.print('''
+                ''')
+            table3.add_row(Panel(" [ entrez [bright_yellow]G[/] ] ",
+                                 style='cyan2', title="Le joueur A a gagné 🎉 ",  expand=False),
+                           Panel(" [ entrez  [bright_yellow]P[/] ] ",
+                                 style="cyan2", title="Le joueur A a perdu 😒 ", expand=False),
+                           Panel(" [ entrez [bright_yellow]N[/] ] ",
+                                 style="cyan2", title="il y a eu match nul 😐", expand=False))
             console.print(table3, justify="left")
 
             gagnant = str(console.input
-                          ("""[cyan2]Le joueur A est : le gagnant 🎉 ( Entrer G ), le perdant 😒 (entrer P )
-                ou les joueurs ont fait match nul 😐 (Entrer N )[/] : """)).upper()
-
+                          ("[cyan2] Merci d'entrer le résultat : ")).upper()
             if gagnant != "G" and gagnant != "P" and gagnant != "N":
                 raise ValueError
-
             sleep(1)
             console.print('''
                 ''')
@@ -117,11 +125,13 @@ class VueTour:
 
     @staticmethod
     def titre_tour():
-        console.rule("[bold cyan]  LE TOURNOI D'ECHEC COMMENCE  ")
+        print("""
+              """)
+        console.rule("[bold cyan2]  LE TOURNOI D'ECHEC COMMENCE  ", style="dark_turquoise")
 
     @staticmethod
     def titre_fin_tournoi():
-        console.print(Panel("""[white]Ce tournoi est terminé, merci à tous les participants 💖
-        Vous allez être redirigé vers le menu principal[/]
-        """, style='bright_magenta', expand=False))
-        sleep(3)
+        console.print(Panel("[white]Ce tournoi est terminé, merci à tous les participants 💖 \n"
+                            "Vous allez être redirigé vers la mise à jour du classement[/]",
+                            style='bright_magenta', expand=False))
+        sleep(4)
